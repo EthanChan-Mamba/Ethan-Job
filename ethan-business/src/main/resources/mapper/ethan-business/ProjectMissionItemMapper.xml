@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.ProjectMissionItemMapper">
+
+    <resultMap type="com.ruoyi.business.domain.ProjectMissionItem" id="ProjectMissionItemResult">
+        <result property="missionItemId"    column="mission_item_id"    />
+        <result property="missionItemName"    column="mission_item_name"    />
+        <result property="missionItemRemark"    column="mission_item_remark"    />
+        <result property="missionItemStatus"    column="mission_item_status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="finishTimeStart"    column="finish_time_start"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="finishTimeEnd"    column="finish_time_end"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="projectMissionTypeId"    column="project_mission_type_id"    />
+    </resultMap>
+
+    <sql id="selectProjectMissionItemVo">
+        select mission_item_id, mission_item_name, mission_item_remark, mission_item_status, create_by, create_time, finish_time_start, update_by, finish_time_end, update_time, project_mission_type_id from project_mission_item
+    </sql>
+
+    <select id="selectProjectMissionItemList" parameterType="com.ruoyi.business.domain.ProjectMissionItem" resultMap="ProjectMissionItemResult">
+        <include refid="selectProjectMissionItemVo"/>
+        <where>
+            <if test="missionItemName != null  and missionItemName != ''"> and mission_item_name like concat('%', #{missionItemName}, '%')</if>
+            <if test="missionItemRemark != null  and missionItemRemark != ''"> and mission_item_remark = #{missionItemRemark}</if>
+            <if test="missionItemStatus != null "> and mission_item_status = #{missionItemStatus}</if>
+            <if test="finishTimeStart != null "> and finish_time_start = #{finishTimeStart}</if>
+            <if test="finishTimeEnd != null "> and finish_time_end = #{finishTimeEnd}</if>
+            <if test="projectMissionTypeId != null "> and project_mission_type_id = #{projectMissionTypeId}</if>
+        </where>
+    </select>
+
+    <select id="selectProjectMissionItemByMissionItemId" parameterType="Long" resultMap="ProjectMissionItemResult">
+        <include refid="selectProjectMissionItemVo"/>
+        where mission_item_id = #{missionItemId}
+    </select>
+
+    <insert id="insertProjectMissionItem" parameterType="com.ruoyi.business.domain.ProjectMissionItem" useGeneratedKeys="true" keyProperty="missionItemId">
+        insert into project_mission_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="missionItemName != null">mission_item_name,</if>
+            <if test="missionItemRemark != null">mission_item_remark,</if>
+            <if test="missionItemStatus != null">mission_item_status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="finishTimeStart != null">finish_time_start,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="finishTimeEnd != null">finish_time_end,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="projectMissionTypeId != null">project_mission_type_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="missionItemName != null">#{missionItemName},</if>
+            <if test="missionItemRemark != null">#{missionItemRemark},</if>
+            <if test="missionItemStatus != null">#{missionItemStatus},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="finishTimeStart != null">#{finishTimeStart},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="finishTimeEnd != null">#{finishTimeEnd},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="projectMissionTypeId != null">#{projectMissionTypeId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProjectMissionItem" parameterType="com.ruoyi.business.domain.ProjectMissionItem">
+        update project_mission_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="missionItemName != null">mission_item_name = #{missionItemName},</if>
+            <if test="missionItemRemark != null">mission_item_remark = #{missionItemRemark},</if>
+            <if test="missionItemStatus != null">mission_item_status = #{missionItemStatus},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="finishTimeStart != null">finish_time_start = #{finishTimeStart},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="finishTimeEnd != null">finish_time_end = #{finishTimeEnd},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="projectMissionTypeId != null">project_mission_type_id = #{projectMissionTypeId},</if>
+        </trim>
+        where mission_item_id = #{missionItemId}
+    </update>
+
+    <delete id="deleteProjectMissionItemByMissionItemId" parameterType="Long">
+        delete from project_mission_item where mission_item_id = #{missionItemId}
+    </delete>
+
+    <delete id="deleteProjectMissionItemByMissionItemIds" parameterType="String">
+        delete from project_mission_item where mission_item_id in
+        <foreach item="missionItemId" collection="array" open="(" separator="," close=")">
+            #{missionItemId}
+        </foreach>
+    </delete>
+</mapper>

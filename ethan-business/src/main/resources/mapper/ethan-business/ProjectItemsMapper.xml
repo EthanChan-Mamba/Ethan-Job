@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.ProjectItemsMapper">
+
+    <resultMap type="com.ruoyi.business.domain.ProjectItems" id="ProjectItemsResult">
+        <result property="projectId"    column="project_id"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="projectType"    column="project_type"    />
+        <result property="projectRemark"    column="project_remark"    />
+        <result property="projectStatus"    column="project_status"    />
+        <result property="finishTimeStart"    column="finish_time_start"    />
+        <result property="finishTimeEnd"    column="finish_time_end"    />
+    </resultMap>
+
+    <sql id="selectProjectItemsVo">
+        select project_id, project_name, create_time, create_by, update_time, update_by, project_type, project_remark, project_status, finish_time_start, finish_time_end from project_items
+    </sql>
+
+    <select id="selectProjectItemsList" parameterType="com.ruoyi.business.domain.ProjectItems" resultMap="ProjectItemsResult">
+        <include refid="selectProjectItemsVo"/>
+        <where>
+            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="projectType != null "> and project_type = #{projectType}</if>
+            <if test="projectRemark != null  and projectRemark != ''"> and project_remark = #{projectRemark}</if>
+            <if test="projectStatus != null "> and project_status = #{projectStatus}</if>
+            <if test="finishTimeStart != null "> and finish_time_start = #{finishTimeStart}</if>
+            <if test="finishTimeEnd != null "> and finish_time_end = #{finishTimeEnd}</if>
+        </where>
+    </select>
+
+    <select id="selectProjectItemsByProjectId" parameterType="Long" resultMap="ProjectItemsResult">
+        <include refid="selectProjectItemsVo"/>
+        where project_id = #{projectId}
+    </select>
+
+    <insert id="insertProjectItems" parameterType="com.ruoyi.business.domain.ProjectItems" useGeneratedKeys="true" keyProperty="projectId">
+        insert into project_items
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectName != null">project_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="projectType != null">project_type,</if>
+            <if test="projectRemark != null">project_remark,</if>
+            <if test="projectStatus != null">project_status,</if>
+            <if test="finishTimeStart != null">finish_time_start,</if>
+            <if test="finishTimeEnd != null">finish_time_end,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectName != null">#{projectName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="projectType != null">#{projectType},</if>
+            <if test="projectRemark != null">#{projectRemark},</if>
+            <if test="projectStatus != null">#{projectStatus},</if>
+            <if test="finishTimeStart != null">#{finishTimeStart},</if>
+            <if test="finishTimeEnd != null">#{finishTimeEnd},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProjectItems" parameterType="com.ruoyi.business.domain.ProjectItems">
+        update project_items
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectName != null">project_name = #{projectName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="projectType != null">project_type = #{projectType},</if>
+            <if test="projectRemark != null">project_remark = #{projectRemark},</if>
+            <if test="projectStatus != null">project_status = #{projectStatus},</if>
+            <if test="finishTimeStart != null">finish_time_start = #{finishTimeStart},</if>
+            <if test="finishTimeEnd != null">finish_time_end = #{finishTimeEnd},</if>
+        </trim>
+        where project_id = #{projectId}
+    </update>
+
+    <delete id="deleteProjectItemsByProjectId" parameterType="Long">
+        delete from project_items where project_id = #{projectId}
+    </delete>
+
+    <delete id="deleteProjectItemsByProjectIds" parameterType="String">
+        delete from project_items where project_id in
+        <foreach item="projectId" collection="array" open="(" separator="," close=")">
+            #{projectId}
+        </foreach>
+    </delete>
+</mapper>
