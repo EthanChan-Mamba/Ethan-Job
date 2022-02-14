@@ -49,8 +49,6 @@
 </template>
 
 <script setup name="ProjectItems">
-import { getToken } from "@/utils/auth";
-import { treeselect } from "@/api/system/dept";
 import { listProjectItemsNoPage } from "@/api/ethan-business/projectItems";
 import projectItemDialog from "./modules/project-item-dialog.vue"
 import ProjectMissionItemCardModule from "./modules/project-mission-item-card.vue"
@@ -80,7 +78,6 @@ watch(deptName, val => {
 /** 查询任务 */
 function getPorjectselect() {
    listProjectItemsNoPage().then(response => {
-      console.log('response', response)
       projectList.value = response.rows;
       if (projectList.value.length != 0) {
          ProjectMissionItem = projectList.value[0]

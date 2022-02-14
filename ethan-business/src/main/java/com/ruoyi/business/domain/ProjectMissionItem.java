@@ -21,7 +21,7 @@ public class ProjectMissionItem extends MPBaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 项目任务id */
-    private Long missionItemId;
+    private Integer missionItemId;
 
     /** 任务名称 */
     @Excel(name = "任务名称")
@@ -33,7 +33,7 @@ public class ProjectMissionItem extends MPBaseEntity
 
     /** 任务状态1进行中；2超时；3失效；4完成；5延期 */
     @Excel(name = "任务状态1进行中；2超时；3失效；4完成；5延期")
-    private Long missionItemStatus;
+    private Integer missionItemStatus;
 
     /** 任务开始时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -47,7 +47,7 @@ public class ProjectMissionItem extends MPBaseEntity
 
     /** 所属项目任务id */
     @Excel(name = "所属项目任务id")
-    private Long projectMissionTypeId;
+    private Integer projectMissionTypeId;
 
 
 }

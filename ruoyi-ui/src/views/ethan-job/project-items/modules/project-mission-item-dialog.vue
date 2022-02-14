@@ -5,25 +5,38 @@
       <el-dialog :title="title" v-model="open" width="680px" append-to-body>
          <el-form ref="projectRef" :model="form" :rules="rules" label-width="120px">
             <el-row>
-               <el-col :span="24">
-                  <el-form-item label="项目名称" prop="projectName">
-                     <el-input v-model="form.projectName" placeholder="请输入项目名称" />
+               <el-col :span="12">
+                  <el-form-item label="任务名称" prop="missionItemName">
+                     <el-input v-model="form.missionItemName" placeholder="请输入任务名称" />
                   </el-form-item>
                </el-col>
             </el-row>
             <el-row>
                <el-col :span="24">
-                  <el-form-item label="项目起止时间" prop="projectTime" required>
+                  <el-form-item label="任务起止时间" prop="missionItemTime" required>
                      <div class="block">
                         <el-date-picker
-                           v-model="form.projectTime"
+                           v-model="form.missionItemTime"
                            type="datetimerange"
                            range-separator="~"
-                           start-placeholder="项目开始时间"
-                           end-placeholder="项目结束日期"
+                           start-placeholder="任务开始时间"
+                           end-placeholder="任务结束日期"
                         >
                         </el-date-picker>
                      </div>
+                  </el-form-item>
+               </el-col>
+            </el-row>
+            <el-row>
+               <el-col :span="20">
+                  <el-form-item label="任务描述" prop="missionItemRemark">
+                     <el-input
+                        v-model="form.missionItemRemark"
+                        :rows="4"
+                        resize="none"
+                        type="textarea"
+                        placeholder="请输入任务描述"
+                     />
                   </el-form-item>
                </el-col>
             </el-row>
@@ -39,7 +52,7 @@
 </template>
 
 <script setup name="ProjectMissionItemsDialog">
-import { addProjectItems } from "@/api/ethan-business/projectItems";
+import { addProjectMissionItem } from "@/api/ethan-business/projectMissionItem";
 
 const { proxy } = getCurrentInstance();
 
@@ -48,12 +61,13 @@ const title = ref("");
 
 const data = reactive({
    form: {
-      projectName: undefined,
-      projectTime: undefined,
+      missionItemName: undefined,
+      missionItemTime: undefined,
+      missionItemRemark: undefined
    },
    rules: {
-      projectName: [{ required: true, message: "项目名称不能为空", trigger: "blur" },],
-      projectTime: [{ required: true, message: '项目起止时间不能为空', trigger: 'blur' }]
+      missionItemName: [{ required: true, message: "任务名称不能为空", trigger: "blur" },],
+      missionItemTime: [{ required: true, message: '任务起止时间不能为空', trigger: 'blur' }]
    },
 });
 
@@ -69,12 +83,13 @@ function cancel() {
 function submitForm() {
    proxy.$refs["projectRef"].validate(valid => {
       if (valid) {
-         form.value.finishTimeStart = form.value.projectTime[0]
-         form.value.finishTimeEnd = form.value.projectTime[1]
-         console.log('form.value', form.value)
-         addProjectItems(form.value).then(response => {
-            proxy.$modal.msgSuccess("新增成功");
-            open.value = false;
+         form.value.finishTimeStart = form.value.missionItemTime[0]
+         form.value.finishTimeEnd = form.value.missionItemTime[1]
+         addProjectMissionItem(form.value).then(response => {
+            if (response.code == 200) {
+               proxy.$modal.msgSuccess("新增成功");
+               open.value = false;
+            }
             // getList();
          });
          // if (form.value.menuId != undefined) {
@@ -84,7 +99,7 @@ function submitForm() {
          //       getList();
          //    });
          // } else {
-         //    addProjectItems(form.value).then(response => {
+         //    addProjectMissionItem(form.value).then(response => {
          //       proxy.$modal.msgSuccess("新增成功");
          //       open.value = false;
          //       getList();

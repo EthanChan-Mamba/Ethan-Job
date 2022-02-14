@@ -35,6 +35,7 @@
 import { Search } from '@element-plus/icons-vue'
 import { addProjectItems } from "@/api/ethan-business/projectItems";
 import ProjectMissionItemDialog from "./project-mission-item-dialog.vue"
+import { listProjectMissionItem } from "@/api/ethan-business/projectMissionItem";
 
 const { proxy } = getCurrentInstance();
 let ProjectMissionItemDialogRef = $ref(null)
@@ -64,16 +65,26 @@ const tableData = [
 const open = ref(false);
 const title = ref("");
 
-const data = reactive({});
+const data = reactive({
+  form: {
+    missionItemName: undefined,
+    missionItemTime: undefined,
+    missionItemRemark: undefined
+  }
+});
 
-const {} = toRefs(data);
+const { form } = toRefs(data);
 defineExpose({});
-function getQuery() {}
+function getQuery() {
+  listProjectMissionItem().then(response => {
+    console.log(response)
+    // getList();
+  });
+}
 function newProjectMissionItem() {
    ProjectMissionItemDialogRef.openDialog()
 }
 function tableRowClassName({ row, rowIndex }) {
-  console.log(rowIndex)
   if (rowIndex === 1) {
     return 'warning-row'
   } else if (rowIndex === 3) {
@@ -81,12 +92,14 @@ function tableRowClassName({ row, rowIndex }) {
   }
   return ''
 }
+
+getQuery();
 </script>
 <style scoped>
-.el-table /deep/ .warning-row {
+.el-table :deep() .warning-row {
   --el-table-tr-bg-color: var(--el-color-warning-lighter);
 }
-.el-table /deep/ .success-row {
+.el-table :deep() .success-row {
   --el-table-tr-bg-color: var(--el-color-success-lighter);
 }
 </style>

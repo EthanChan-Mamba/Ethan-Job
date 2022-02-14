@@ -1,16 +1,13 @@
 package com.ruoyi.business.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.business.domain.ProjectMissionItem;
@@ -46,7 +43,7 @@ public class ProjectMissionItemController extends BaseController
      * 查询任务项目个体列表
      */
     @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:list')")
-    @PostMapping("/list")
+    @GetMapping("/list")
     @ResponseBody
     public TableDataInfo list(ProjectMissionItem projectMissionItem)
     {
@@ -85,8 +82,11 @@ public class ProjectMissionItemController extends BaseController
     @Log(title = "任务项目个体", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(ProjectMissionItem projectMissionItem)
+    public AjaxResult addSave(@RequestBody ProjectMissionItem projectMissionItem)
     {
+        projectMissionItem.setMissionItemStatus(1);
+        projectMissionItem.setCreateBy(getUsername());
+        projectMissionItem.setCreateTime(new Date());
         return toAjax(projectMissionItemService.save(projectMissionItem));
     }
 
