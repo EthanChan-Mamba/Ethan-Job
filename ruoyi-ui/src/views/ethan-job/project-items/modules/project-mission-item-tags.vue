@@ -30,8 +30,17 @@ const data = reactive({
 });
 
 const { form, rules } = toRefs(data);
+
+let projectItem = $ref({});
+
 defineExpose({
+	setProjectItem
 })
+/** 赋值任务 */
+function setProjectItem(pi) {
+  projectItem = pi
+  ProjectMissionItemListRef.getMissionItems(pi.projectId)
+}
 
 </script>
 

@@ -2,7 +2,7 @@
   <el-row :gutter="20" >
     <el-col :span="6">
       <el-input
-        v-model="deptName"
+        v-model="form.missionItemName"
         placeholder="请输入项目名称"
         clearable
         size="small"
@@ -11,7 +11,7 @@
       />
     </el-col>
     <el-col :span="3">
-      <el-button :icon="Search" @click="getQuery">查询</el-button>
+      <el-button :icon="Search" @click="getMissionItems">查询</el-button>
     </el-col>
     <el-col :span="4">
       <el-button type="primary" @click="newProjectMissionItem">新增任务</el-button>
@@ -23,9 +23,8 @@
       style="width: 100%"
       :row-class-name="tableRowClassName"
     >
-      <el-table-column prop="date" label="Date" width="180" />
-      <el-table-column prop="name" label="Name" width="180" />
-      <el-table-column prop="address" label="Address" />
+      <el-table-column prop="missionItemName" label="任务名称" width="200" />
+      <el-table-column prop="finishTimeEnd" label="结束时间" />
     </el-table>
   </el-row> 
   <project-mission-item-dialog ref="ProjectMissionItemDialogRef"/>
@@ -40,33 +39,14 @@ import { listProjectMissionItem } from "@/api/ethan-business/projectMissionItem"
 const { proxy } = getCurrentInstance();
 let ProjectMissionItemDialogRef = $ref(null)
 
-const tableData = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-]
+const tableData = $ref([])
 const open = ref(false);
 const title = ref("");
+const projectId = $ref("");
 
 const data = reactive({
   form: {
+    projectItemId: undefined,
     missionItemName: undefined,
     missionItemTime: undefined,
     missionItemRemark: undefined
@@ -74,10 +54,15 @@ const data = reactive({
 });
 
 const { form } = toRefs(data);
-defineExpose({});
-function getQuery() {
-  listProjectMissionItem().then(response => {
+defineExpose({
+  getMissionItems
+});
+function getMissionItems(projectId) {
+  console.log('projectId', projectId)
+  form.value.projectItemId = projectId
+  listProjectMissionItem(form).then(response => {
     console.log(response)
+    tableData = response.rows
     // getList();
   });
 }
@@ -93,7 +78,7 @@ function tableRowClassName({ row, rowIndex }) {
   return ''
 }
 
-getQuery();
+// getQuery();
 </script>
 <style scoped>
 .el-table :deep() .warning-row {

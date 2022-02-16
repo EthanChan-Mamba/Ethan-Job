@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="com.ruoyi.business.domain.ProjectMissionItem" id="ProjectMissionItemResult">
         <result property="missionItemId"    column="mission_item_id"    />
         <result property="missionItemName"    column="mission_item_name"    />
+        <result property="projectItemId"    column="project_item_id"    />
         <result property="missionItemRemark"    column="mission_item_remark"    />
         <result property="missionItemStatus"    column="mission_item_status"    />
         <result property="createBy"    column="create_by"    />
@@ -19,13 +20,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectProjectMissionItemVo">
-        select mission_item_id, mission_item_name, mission_item_remark, mission_item_status, create_by, create_time, finish_time_start, update_by, finish_time_end, update_time, project_mission_type_id from project_mission_item
+        select mission_item_id, mission_item_name, project_item_id, mission_item_remark, mission_item_status, create_by, create_time, finish_time_start, update_by, finish_time_end, update_time, project_mission_type_id from project_mission_item
     </sql>
 
     <select id="selectProjectMissionItemList" parameterType="com.ruoyi.business.domain.ProjectMissionItem" resultMap="ProjectMissionItemResult">
         <include refid="selectProjectMissionItemVo"/>
         <where>
             <if test="missionItemName != null  and missionItemName != ''"> and mission_item_name like concat('%', #{missionItemName}, '%')</if>
+            <if test="projectItemId != null "> and project_item_id = #{projectItemId}</if>
             <if test="missionItemRemark != null  and missionItemRemark != ''"> and mission_item_remark = #{missionItemRemark}</if>
             <if test="missionItemStatus != null "> and mission_item_status = #{missionItemStatus}</if>
             <if test="finishTimeStart != null "> and finish_time_start = #{finishTimeStart}</if>
@@ -43,6 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into project_mission_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="missionItemName != null">mission_item_name,</if>
+            <if test="projectItemId != null">project_item_id,</if>
             <if test="missionItemRemark != null">mission_item_remark,</if>
             <if test="missionItemStatus != null">mission_item_status,</if>
             <if test="createBy != null">create_by,</if>
@@ -55,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="missionItemName != null">#{missionItemName},</if>
+            <if test="projectItemId != null">#{projectItemId},</if>
             <if test="missionItemRemark != null">#{missionItemRemark},</if>
             <if test="missionItemStatus != null">#{missionItemStatus},</if>
             <if test="createBy != null">#{createBy},</if>
@@ -71,6 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update project_mission_item
         <trim prefix="SET" suffixOverrides=",">
             <if test="missionItemName != null">mission_item_name = #{missionItemName},</if>
+            <if test="projectItemId != null">project_item_id = #{projectItemId},</if>
             <if test="missionItemRemark != null">mission_item_remark = #{missionItemRemark},</if>
             <if test="missionItemStatus != null">mission_item_status = #{missionItemStatus},</if>
             <if test="createBy != null">create_by = #{createBy},</if>

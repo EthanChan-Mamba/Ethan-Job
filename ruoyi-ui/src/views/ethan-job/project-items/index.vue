@@ -59,7 +59,7 @@ const deptName = ref("");
 const projectList = ref([]);
 const projectItemDialogRef = ref(null)
 let ProjectMissionItemRef = $ref(null)
-let ProjectMissionItem = $ref(undefined)
+let ProjectItem = $ref(undefined)
 
 const data = reactive({
 });
@@ -71,6 +71,7 @@ const filterNode = (value, data) => {
   if (!value) return true;
   return data.label.indexOf(value) !== -1;
 };
+
 /** 根据名称筛选部门树 */
 watch(deptName, val => {
   proxy.$refs["deptTreeRef"].filter(val);
@@ -79,9 +80,10 @@ watch(deptName, val => {
 function getPorjectselect() {
    listProjectItemsNoPage().then(response => {
       projectList.value = response.rows;
+      console.log(response)
       if (projectList.value.length != 0) {
-         ProjectMissionItem = projectList.value[0]
-         ProjectMissionItemRef.setMissionItem(ProjectMissionItem)
+         ProjectItem = projectList.value[0]
+         ProjectMissionItemRef.setProjectItem(ProjectItem)
       }
    });
 };
