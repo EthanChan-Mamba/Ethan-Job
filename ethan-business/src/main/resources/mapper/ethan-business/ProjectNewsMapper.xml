@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.ProjectNewsMapper">
+
+    <resultMap type="com.ruoyi.business.domain.ProjectNews" id="ProjectNewsResult">
+        <result property="newsId"    column="news_id"    />
+        <result property="projectNewsName"    column="project_news_name"    />
+        <result property="projectNewsContent"    column="project_news_content"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectProjectNewsVo">
+        select news_id, project_news_name, project_news_content, create_time, create_by, project_id, update_by, update_time from project_news
+    </sql>
+
+    <select id="selectProjectNewsList" parameterType="com.ruoyi.business.domain.ProjectNews" resultMap="ProjectNewsResult">
+        <include refid="selectProjectNewsVo"/>
+        <where>
+            <if test="projectNewsName != null  and projectNewsName != ''"> and project_news_name like concat('%', #{projectNewsName}, '%')</if>
+            <if test="projectNewsContent != null  and projectNewsContent != ''"> and project_news_content = #{projectNewsContent}</if>
+            <if test="projectId != null "> and project_id = #{projectId}</if>
+        </where>
+    </select>
+
+    <select id="selectProjectNewsByNewsId" parameterType="Integer" resultMap="ProjectNewsResult">
+        <include refid="selectProjectNewsVo"/>
+        where news_id = #{newsId}
+    </select>
+
+    <insert id="insertProjectNews" parameterType="com.ruoyi.business.domain.ProjectNews" useGeneratedKeys="true" keyProperty="newsId">
+        insert into project_news
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectNewsName != null">project_news_name,</if>
+            <if test="projectNewsContent != null">project_news_content,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="projectId != null">project_id,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectNewsName != null">#{projectNewsName},</if>
+            <if test="projectNewsContent != null">#{projectNewsContent},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProjectNews" parameterType="com.ruoyi.business.domain.ProjectNews">
+        update project_news
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectNewsName != null">project_news_name = #{projectNewsName},</if>
+            <if test="projectNewsContent != null">project_news_content = #{projectNewsContent},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="projectId != null">project_id = #{projectId},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where news_id = #{newsId}
+    </update>
+
+    <delete id="deleteProjectNewsByNewsId" parameterType="Integer">
+        delete from project_news where news_id = #{newsId}
+    </delete>
+
+    <delete id="deleteProjectNewsByNewsIds" parameterType="String">
+        delete from project_news where news_id in
+        <foreach item="newsId" collection="array" open="(" separator="," close=")">
+            #{newsId}
+        </foreach>
+    </delete>
+</mapper>
