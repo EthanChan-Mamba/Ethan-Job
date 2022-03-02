@@ -1,5 +1,8 @@
 package com.ruoyi.business.annotation;
 
+import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.enums.BusinessType;
+
 import java.lang.annotation.*;
 
 /**
@@ -16,6 +19,12 @@ public @interface ProjectLog {
     // 日志描述
     String description() default "";
 
-    // 操作类型
-    int tableType() default 0;
+    /** 日志动态类型 */
+    BusinessType logType() default BusinessType.OTHER;
+    //
+    // /** 动态内容 */
+    // String projectNewsContent() default "";
+    //
+    // /** 项目id */
+    // Integer projectId;
 }

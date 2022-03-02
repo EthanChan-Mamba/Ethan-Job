@@ -1,7 +1,10 @@
 package com.ruoyi.business.controller;
 
+import com.ruoyi.business.annotation.ProjectLog;
+import com.ruoyi.business.domain.ProjectMissionItem;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.enums.BusinessType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,7 +28,8 @@ public class TesttestController extends BaseController
     }
 
     @GetMapping("/list")
-    public AjaxResult userList()
+    @ProjectLog(description = "测试", logType = BusinessType.UPDATE)
+    public AjaxResult userList(ProjectMissionItem projectMissionItem)
     {
         List<UserEntity> userList = new ArrayList<UserEntity>(users.values());
         return AjaxResult.success(userList);

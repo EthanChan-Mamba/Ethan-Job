@@ -6,6 +6,7 @@
           <div class="dashboard-hello">{{ timeFix }},{{ user.nickName }}</div>
         </div>
       </template>
+      <el-button @click="testNews">测试项目动态</el-button>
       <p class="front-card">任务数据如下：</p>
       
       <el-row :gutter="20">
@@ -61,6 +62,7 @@
 <script>
 import { timeFix } from '@/utils/util'
 import { getUserProfile } from "@/api/system/user"
+import { projectNews } from "@/api/ethan-business/projectNews"
 // const version = ref('3.8.1')
 export default {
   name: 'Index',
@@ -123,10 +125,14 @@ export default {
     // 获取用户信息
     getUser () {
       getUserProfile().then(response => {
-        console.log(response)
         this.user = response.data
         this.roleGroup = response.roleGroup
         this.postGroup = response.postGroup
+      })
+    },
+    testNews () {
+      projectNews({missionItemId: 1, missionItemName: 'helo'}).then(response => {
+        console.log('projectNews', response)
       })
     }
   }

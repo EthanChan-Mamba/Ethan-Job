@@ -1,24 +1,27 @@
 package com.ruoyi.business.aspectj;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.business.annotation.ProjectLog;
 import com.ruoyi.business.domain.ProjectNews;
 import com.ruoyi.business.service.IProjectNewsService;
-import com.ruoyi.business.service.impl.ProjectNewsServiceImpl;
+import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.enums.HttpMethod;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author chen
@@ -29,7 +32,7 @@ import java.util.List;
  */
 @Aspect
 @Component
-public class SystemLogAspect {
+public class ProjectLogAspect {
 
     @Autowired
     private IProjectNewsService projectNewsService;
@@ -49,9 +52,11 @@ public class SystemLogAspect {
 
         try {
             String content = getServiceMthodDescription(joinPoint);
-            news.setProjectNewsContent(loginUser.getUsername() + content);
+            String serviceMthodTableType = getServiceMthodTableType(joinPoint).name();
+            news.setProjectNewsContent(loginUser.getUsername() + serviceMthodTableType + content);
             news.setCreateBy(loginUser.getUsername());
-            projectNewsService.save(news);
+            getArgs(joinPoint);
+            // projectNewsService.save(news);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -90,24 +95,34 @@ public class SystemLogAspect {
      * @return 方法描述
      * @throws ClassNotFoundException
      */
-    private String getServiceMthodTableType(JoinPoint joinPoint) throws ClassNotFoundException {
+    private BusinessType getServiceMthodTableType(JoinPoint joinPoint) throws ClassNotFoundException {
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         Object[] arguments = joinPoint.getArgs();
         Class targetClass = Class.forName(targetName);
         Method[] methods = targetClass.getMethods();
-        String description = "";
+        BusinessType description = null;
         for (Method method : methods) {
             if (method.getName().equals(methodName)) {
                 Class[] clazzs = method.getParameterTypes();
                 if (clazzs.length == arguments.length) {
-                    description = method.getAnnotation(ProjectLog.class).description();
+                    description = method.getAnnotation(ProjectLog.class).logType();
                     break;
                 }
             }
         }
 
         return description;
+    }
+
+    /**
+     *
+     */
+    public void getArgs(JoinPoint joinPoint)
+    {
+
+        Object[] args = joinPoint.getArgs();
+        System.out.println(Arrays.toString(args));
     }
 
     /**
