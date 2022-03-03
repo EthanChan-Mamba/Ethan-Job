@@ -42,3 +42,5 @@ nbdist/
 !*/build/*.java
 !*/build/*.html
 !*/build/*.xml
+/ethan-business/src/main/resources/rebel.xml
+/.gitignore

@@ -2,6 +2,7 @@ package com.ruoyi.business.controller;
 
 import com.ruoyi.business.annotation.ProjectLog;
 import com.ruoyi.business.domain.ProjectMissionItem;
+import com.ruoyi.business.enums.BusinessTypeWithName;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
@@ -28,7 +29,7 @@ public class TesttestController extends BaseController
     }
 
     @GetMapping("/list")
-    @ProjectLog(description = "测试", logType = BusinessType.UPDATE)
+    @ProjectLog(description = "测试", logType = BusinessTypeWithName.UPDATE)
     public AjaxResult userList(ProjectMissionItem projectMissionItem)
     {
         List<UserEntity> userList = new ArrayList<UserEntity>(users.values());

@@ -1,38 +1,37 @@
 package com.ruoyi.business.aspectj;
 
-import com.alibaba.fastjson.JSON;
 import com.ruoyi.business.annotation.ProjectLog;
+import com.ruoyi.business.domain.ProjectMissionItem;
 import com.ruoyi.business.domain.ProjectNews;
+import com.ruoyi.business.enums.BusinessTypeWithName;
+import com.ruoyi.business.enums.MissionItemStatus;
 import com.ruoyi.business.service.IProjectNewsService;
-import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.enums.HttpMethod;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.Date;
 
 /**
  * @author chen
  * @version 1.0.0
- * @ClassName SystemLogAspect.java
- * @Description TODO
+ * @ClassName ProjectLogAspect.java
+ * @Description 项目动态日志
  * @createTime 2022-02-28 09:35
  */
 @Aspect
 @Component
 public class ProjectLogAspect {
+
+    private static final Logger log = LoggerFactory.getLogger(ProjectLogAspect.class);
 
     @Autowired
     private IProjectNewsService projectNewsService;
@@ -52,13 +51,39 @@ public class ProjectLogAspect {
 
         try {
             String content = getServiceMthodDescription(joinPoint);
-            String serviceMthodTableType = getServiceMthodTableType(joinPoint).name();
-            news.setProjectNewsContent(loginUser.getUsername() + serviceMthodTableType + content);
-            news.setCreateBy(loginUser.getUsername());
-            getArgs(joinPoint);
-            // projectNewsService.save(news);
+            BusinessTypeWithName businessTypeWithName = getServiceMthodTableType(joinPoint);
+            StringBuilder newsContent = new StringBuilder();
+            // 创建人
+            newsContent.append(loginUser.getUsername());
+            // 操作名称
+            newsContent.append(businessTypeWithName.getInfo());
+            newsContent.append("了任务：");
+            ProjectMissionItem args = getArgs(joinPoint);
+            if (args != null){
+                // 任务名称
+                newsContent.append(args.getMissionItemName()).append("; ");
+            }
+            newsContent.append(content);
+            news.setProjectNewsContent(newsContent.toString());
+            if (businessTypeWithName == BusinessTypeWithName.INSERT) {
+                news.setCreateBy(loginUser.getUsername());
+                news.setCreateTime(new Date());
+            } else if (businessTypeWithName == BusinessTypeWithName.UPDATE) {
+                // 更新的状态
+                assert args != null;
+                newsContent.append("状态为：").append(MissionItemStatus.getType(args.getMissionItemStatus()));
+                news.setUpdateBy(loginUser.getUsername());
+                news.setUpdateTime(new Date());
+            } else {
+                news.setUpdateBy(loginUser.getUsername());
+                news.setUpdateTime(new Date());
+            }
+            // 设置所属项目
+            assert args != null;
+            news.setProjectId(args.getProjectItemId());
+            projectNewsService.save(news);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
     }
@@ -95,51 +120,42 @@ public class ProjectLogAspect {
      * @return 方法描述
      * @throws ClassNotFoundException
      */
-    private BusinessType getServiceMthodTableType(JoinPoint joinPoint) throws ClassNotFoundException {
+    private BusinessTypeWithName getServiceMthodTableType(JoinPoint joinPoint) throws ClassNotFoundException {
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         Object[] arguments = joinPoint.getArgs();
         Class targetClass = Class.forName(targetName);
         Method[] methods = targetClass.getMethods();
-        BusinessType description = null;
+        BusinessTypeWithName businessTypeWithName = null;
         for (Method method : methods) {
             if (method.getName().equals(methodName)) {
                 Class[] clazzs = method.getParameterTypes();
                 if (clazzs.length == arguments.length) {
-                    description = method.getAnnotation(ProjectLog.class).logType();
+                    businessTypeWithName = method.getAnnotation(ProjectLog.class).logType();
                     break;
                 }
             }
         }
 
-        return description;
+        return businessTypeWithName;
     }
 
     /**
      *
+     * @return
      */
-    public void getArgs(JoinPoint joinPoint)
+    public ProjectMissionItem getArgs(JoinPoint joinPoint)
     {
 
         Object[] args = joinPoint.getArgs();
-        System.out.println(Arrays.toString(args));
+        for (int i = 0; i < args.length; i++) {
+            if (i == 0) {
+                return (ProjectMissionItem) args[0];
+            } else {
+                break;
+            }
+        }
+        return null;
     }
 
-    /**
-     * 获取json格式的参数<br>
-     *
-     * @param joinPoint
-     * @return
-     * @since JDK1.8
-     */
-    // private String getServiceMethodParams(JoinPoint joinPoint) {
-    //     Object[] arguments = joinPoint.getArgs();
-    //     if (arguments == null || arguments.length == 0) {
-    //         return "无参数";
-    //     }
-    //     List<Object> list = new ArrayList<>(Arrays.asList(arguments));
-    //     String params = JsonUtil.getJsonStringFromPOJO(list);
-    //     JSONObject.toJSONString()
-    //     return params;
-    // }
 }

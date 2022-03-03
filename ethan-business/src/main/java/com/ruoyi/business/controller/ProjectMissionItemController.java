@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.business.annotation.ProjectLog;
+import com.ruoyi.business.enums.BusinessTypeWithName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -59,6 +60,7 @@ public class ProjectMissionItemController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:export')")
     @Log(title = "任务项目个体", businessType = BusinessType.EXPORT)
+    @ProjectLog(description = "", logType = BusinessTypeWithName.EXPORT)
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(ProjectMissionItem projectMissionItem)
@@ -82,6 +84,7 @@ public class ProjectMissionItemController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:add')")
     @Log(title = "任务项目个体", businessType = BusinessType.INSERT)
+    @ProjectLog(description = "", logType = BusinessTypeWithName.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@RequestBody ProjectMissionItem projectMissionItem)
@@ -108,6 +111,7 @@ public class ProjectMissionItemController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:edit')")
     @Log(title = "任务项目个体", businessType = BusinessType.UPDATE)
+    @ProjectLog(description = "", logType = BusinessTypeWithName.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(ProjectMissionItem projectMissionItem)
@@ -120,6 +124,7 @@ public class ProjectMissionItemController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:remove')")
     @Log(title = "任务项目个体", businessType = BusinessType.DELETE)
+    @ProjectLog(description = "", logType = BusinessTypeWithName.DELETE)
     @PostMapping( "/remove")
     @ResponseBody
     public AjaxResult remove(String ids)
