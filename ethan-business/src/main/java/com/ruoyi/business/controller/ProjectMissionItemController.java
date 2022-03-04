@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.ruoyi.business.annotation.ProjectLog;
 import com.ruoyi.business.enums.BusinessTypeWithName;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -112,10 +113,12 @@ public class ProjectMissionItemController extends BaseController
     @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:edit')")
     @Log(title = "任务项目个体", businessType = BusinessType.UPDATE)
     @ProjectLog(description = "", logType = BusinessTypeWithName.UPDATE)
-    @PostMapping("/edit")
+    @PutMapping
     @ResponseBody
-    public AjaxResult editSave(ProjectMissionItem projectMissionItem)
+    public AjaxResult editSave(@RequestBody ProjectMissionItem projectMissionItem)
     {
+        projectMissionItem.setUpdateBy(getUsername());
+        projectMissionItem.setUpdateTime(new Date());
         return toAjax(projectMissionItemService.updateById(projectMissionItem));
     }
 

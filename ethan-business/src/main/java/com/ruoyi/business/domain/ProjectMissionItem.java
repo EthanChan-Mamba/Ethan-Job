@@ -1,5 +1,6 @@
 package com.ruoyi.business.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,7 @@ public class ProjectMissionItem extends MPBaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 项目任务id */
+    @TableId
     private Integer missionItemId;
 
     /** 任务名称 */

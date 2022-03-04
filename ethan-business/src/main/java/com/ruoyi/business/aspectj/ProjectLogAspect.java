@@ -63,23 +63,22 @@ public class ProjectLogAspect {
                 // 任务名称
                 newsContent.append(args.getMissionItemName()).append("; ");
             }
-            newsContent.append(content);
-            news.setProjectNewsContent(newsContent.toString());
-            if (businessTypeWithName == BusinessTypeWithName.INSERT) {
-                news.setCreateBy(loginUser.getUsername());
-                news.setCreateTime(new Date());
-            } else if (businessTypeWithName == BusinessTypeWithName.UPDATE) {
+            System.out.println("----------------------------" + BusinessTypeWithName.UPDATE.getCode());
+            System.out.println("----------------------------" + businessTypeWithName.getCode());
+            if (BusinessTypeWithName.UPDATE.getCode().equals(businessTypeWithName.getCode())) {
                 // 更新的状态
                 assert args != null;
-                newsContent.append("状态为：").append(MissionItemStatus.getType(args.getMissionItemStatus()));
-                news.setUpdateBy(loginUser.getUsername());
-                news.setUpdateTime(new Date());
-            } else {
+                newsContent.append("状态为：").append(MissionItemStatus.getType(args.getMissionItemStatus())).append("; ");
                 news.setUpdateBy(loginUser.getUsername());
                 news.setUpdateTime(new Date());
             }
+            newsContent.append(content);
+            news.setProjectNewsContent(newsContent.toString());
+            news.setCreateBy(loginUser.getUsername());
+            news.setCreateTime(new Date());
             // 设置所属项目
             assert args != null;
+            news.setProjectNewsName(args.getMissionItemName());
             news.setProjectId(args.getProjectItemId());
             projectNewsService.save(news);
         } catch (ClassNotFoundException e) {
