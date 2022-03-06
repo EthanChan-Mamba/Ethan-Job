@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 
 // 查询projectItems列表
+export function listHomePage(query) {
+  return request({
+    url: '/ethan-business/projectItems/homeList',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询projectItems列表
 export function listProjectItems(query) {
   return request({
     url: '/ethan-business/projectItems/list',

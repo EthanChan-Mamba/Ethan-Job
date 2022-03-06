@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.business.domain.ProjectItems;
+import com.ruoyi.business.futureTask.ProjectItemsFutureTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -32,12 +34,30 @@ public class ProjectItemsController extends BaseController
 
     @Autowired
     private IProjectItemsService projectItemsService;
+    private ProjectItemsFutureTask projectItemsFutureTask;
+    @Autowired
+    public void setProjectItemsFutureTask(ProjectItemsFutureTask projectItemsFutureTask) {
+        this.projectItemsFutureTask = projectItemsFutureTask;
+    }
 
     @PreAuthorize("@ss.hasPermi('ethan-business:projectItems:view')")
     @GetMapping()
     public String projectItems()
     {
         return prefix + "/projectItems";
+    }
+
+    /**
+     * 查询projectItems列表
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('ethan-business:projectItems:list')")
+    @GetMapping("/homeList")
+    @ResponseBody
+    public AjaxResult homeList(ProjectItems projectItems)
+    {
+        JSONObject homePageResult = projectItemsFutureTask.getHomePageResult(projectItems);
+        return AjaxResult.success(homePageResult);
     }
 
     /**

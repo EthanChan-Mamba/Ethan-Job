@@ -1,11 +1,13 @@
 package com.ruoyi.framework.config;
 
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
+
+import com.alibaba.druid.util.DaemonThreadFactory;
+import com.ruoyi.framework.manager.factory.AsyncFactory;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import com.ruoyi.common.utils.Threads;
 
@@ -18,13 +20,13 @@ import com.ruoyi.common.utils.Threads;
 public class ThreadPoolConfig
 {
     // 核心线程池大小
-    private int corePoolSize = 50;
+    private int corePoolSize = 8;
 
     // 最大可创建的线程数
-    private int maxPoolSize = 200;
+    private int maxPoolSize = 20;
 
     // 队列最大长度
-    private int queueCapacity = 1000;
+    private int queueCapacity = 50;
 
     // 线程池维护线程所允许的空闲时间
     private int keepAliveSeconds = 300;
@@ -59,4 +61,5 @@ public class ThreadPoolConfig
             }
         };
     }
+
 }

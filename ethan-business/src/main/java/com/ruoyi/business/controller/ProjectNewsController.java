@@ -46,7 +46,7 @@ public class ProjectNewsController extends BaseController
      * 查询项目动态列表
      */
     @PreAuthorize("@ss.hasPermi('ethan-business:project-news:list')")
-    @PostMapping("/list")
+    @GetMapping("/list")
     @ResponseBody
     public TableDataInfo list(ProjectNews projectNews)
     {

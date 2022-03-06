@@ -65,7 +65,7 @@ const { proxy } = getCurrentInstance();
 const { mission_item_status } = proxy.useDict("mission_item_status");
 let ProjectMissionItemDialogRef = $ref(null)
 
-const tableData = $ref([])
+let tableData = $ref([])
 const open = ref(false);
 const title = ref("");
 const projectId = $ref("");

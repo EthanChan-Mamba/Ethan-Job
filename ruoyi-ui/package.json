@@ -1,12 +1,12 @@
 {
   "name": "ruoyi",
   "version": "3.8.1",
-  "description": "若依管理系统",
+  "description": "Ethan任务计划",
   "author": "若依",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-	"build:prod": "vite build",
+    "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
     "preview": "vite preview"
   },
@@ -15,10 +15,10 @@
     "url": "https://gitee.com/y_project/RuoYi-Vue.git"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "0.2.4",
+    "@element-plus/icons-vue": "0.2.6",
     "axios": "0.24.0",
     "echarts": "5.2.2",
-    "element-plus": "1.2.0-beta.6",
+    "element-plus": "2.0.1",
     "file-saver": "2.0.5",
     "fuse.js": "6.4.6",
     "js-cookie": "3.0.1",

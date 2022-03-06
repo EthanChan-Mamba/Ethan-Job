@@ -1,22 +1,28 @@
 <template>
-  <el-tabs type="border-card">
-    <el-tab-pane label="任务列表">
+  <!-- <el-tabs type="border-card"> -->
+  <el-tabs v-model="tabValue" type="border-card" @tab-click="tabsChange">
+    <el-tab-pane label="任务列表" name="projectMissionItem">
       <project-mission-item-list ref="ProjectMissionItemListRef"/>
     </el-tab-pane>
-    <el-tab-pane label="任务日报">Config</el-tab-pane>
-    <el-tab-pane label="任务动态">Role</el-tab-pane>
+    <el-tab-pane label="任务日报" name="config">Config</el-tab-pane>
+    <el-tab-pane label="任务动态" name="projectLog">
+      <project-log ref="ProjectLogRef"/>
+    </el-tab-pane>
   </el-tabs>
 </template>
 
 <script setup name="ProjectMissionItemsTags">
 import { addProjectItems } from "@/api/ethan-business/projectItems";
 import ProjectMissionItemList from "./project-mission-item-list.vue"
+import ProjectLog from "./project-log.vue"
 
 const { proxy } = getCurrentInstance();
 
 const open = ref(false);
 const title = ref("");
+const tabValue = $ref('projectMissionItem')
 let ProjectMissionItemListRef = $ref(null)
+let ProjectLogRef = $ref(null)
 
 const data = reactive({
    form: {
@@ -40,6 +46,13 @@ defineExpose({
 function setProjectItem(pi) {
   projectItem = pi
   ProjectMissionItemListRef.getMissionItems(pi.projectId)
+}
+function tabsChange (tab, event) {
+  console.log('tab', tab)
+  if (tab = 'projectLog') {
+    console.log('projectItem', projectItem)
+    ProjectLogRef.getLog(projectItem)
+  }
 }
 
 </script>

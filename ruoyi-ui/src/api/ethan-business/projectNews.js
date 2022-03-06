@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 // 测试项目动态
-export function projectNews(query) {
+export function listProjectNewsByProjectId(query) {
   return request({
-    url: '/testtest/user/list',
+    url: '/ethan-business/project-news/list',
     method: 'get',
     params: query
   })
