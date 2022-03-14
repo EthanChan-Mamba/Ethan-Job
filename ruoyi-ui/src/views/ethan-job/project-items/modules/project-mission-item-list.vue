@@ -11,7 +11,7 @@
       />
     </el-col>
     <el-col :span="3">
-      <el-button :icon="Search" @click="getMissionItems">查询</el-button>
+      <el-button :icon="Search" @click="getMissionItems(projectItemId)">查询</el-button>
     </el-col>
     <el-col :span="4">
       <el-button type="primary" @click="newProjectMissionItem">新增任务</el-button>
@@ -52,7 +52,7 @@
       </el-table-column>
     </el-table>
   </el-row>
-  <project-mission-item-dialog ref="ProjectMissionItemDialogRef"/>
+  <project-mission-item-dialog ref="ProjectMissionItemDialogRef" @ok="getMissionItems"/>
 </template>
 
 <script setup name="ProjectMissionItemList">
@@ -68,7 +68,7 @@ let ProjectMissionItemDialogRef = $ref(null)
 let tableData = $ref([])
 const open = ref(false);
 const title = ref("");
-const projectId = $ref("");
+const projectItemId = $ref("");
 
 const data = reactive({
   form: {
@@ -84,13 +84,14 @@ defineExpose({
   getMissionItems
 });
 function getMissionItems(projectId) {
+  projectItemId = projectId
   form.value.projectItemId = projectId
   listProjectMissionItem(form).then(response => {
     tableData = response.rows
   });
 }
 function newProjectMissionItem() {
-   ProjectMissionItemDialogRef.openDialog()
+   ProjectMissionItemDialogRef.openDialog(form.value.projectItemId)
 }
 function missionItemStatusFormat(missionItemStatus) {
   for (let i = 0; i < mission_item_status.value.length; i++) {

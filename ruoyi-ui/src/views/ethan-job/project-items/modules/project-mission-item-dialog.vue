@@ -55,9 +55,11 @@
 import { addProjectMissionItem } from "@/api/ethan-business/projectMissionItem";
 
 const { proxy } = getCurrentInstance();
+const emit = defineEmits();
 
-const open = ref(false);
-const title = ref("");
+const open = $ref(false);
+const title = ref('');
+const dialogProjectItemId = $ref('');
 
 const data = reactive({
    form: {
@@ -89,8 +91,8 @@ function submitForm() {
             if (response.code == 200) {
                proxy.$modal.msgSuccess("新增成功");
                open.value = false;
+               emit('ok', dialogProjectItemId)
             }
-            // getList();
          });
          // if (form.value.menuId != undefined) {
          //    updateMenu(form.value).then(response => {
@@ -109,8 +111,9 @@ function submitForm() {
    });
 }
 /** 打开窗口 */
-function openDialog() {
-  open.value = true;
+function openDialog(projectItemId) {
+   dialogProjectItemId = projectItemId
+   open = true;
 }
 
 </script>
