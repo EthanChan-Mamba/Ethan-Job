@@ -3,8 +3,11 @@ package com.ruoyi.business.futureTask;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.business.domain.ProjectItems;
+import com.ruoyi.business.domain.ProjectMissionItem;
+import com.ruoyi.business.enums.MissionItemStatus;
 import com.ruoyi.business.enums.ProjectStatus;
 import com.ruoyi.business.service.IProjectItemsService;
+import com.ruoyi.business.service.IProjectMissionItemService;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
@@ -14,6 +17,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -32,7 +36,7 @@ import java.util.stream.Collectors;
 @Component
 public class ProjectItemsFutureTask {
     @Resource
-    private IProjectItemsService projectItemsService;
+    private IProjectMissionItemService projectMissionItemService;
 
     /**
      * 异步操作任务调度线程池
@@ -40,21 +44,44 @@ public class ProjectItemsFutureTask {
     private ThreadPoolTaskExecutor executor = SpringUtils.getBean("threadPoolTaskExecutor");
 
     @SuppressWarnings("all")
-    public JSONObject getHomePageResult(ProjectItems projectItems) {
+    public JSONObject getHomePageCardResult(ProjectMissionItem projectMissionItem) {
         log.info("首页查询");
         JSONObject jsonObject = new JSONObject();
         try {
             LoginUser loginUser = SecurityUtils.getLoginUser();
-            QueryWrapper<ProjectItems> projectItemsQueryWrapper = new QueryWrapper<>();
-            Future<Integer> pendingFuture = executor.submit(() -> projectItemsService.count(
-                    projectItemsQueryWrapper.eq("create_by", loginUser.getUsername())
-                    .eq("project_status", ProjectStatus.getCode("1"))
-                    .eq("project_status", ProjectStatus.getCode("2"))
-            ));
+            QueryWrapper<ProjectMissionItem> projectMissionItemQueryWrapper = new QueryWrapper<>();
+            List<Integer> missionItemStatusList = new ArrayList<>();
 
+            // 今日待完成
+            missionItemStatusList.add(MissionItemStatus.getCode("进行中"));
+            missionItemStatusList.add(MissionItemStatus.getCode("超时"));
+            missionItemStatusList.add(MissionItemStatus.getCode("延期"));
+            Future<Long> pendingFuture = executor.submit(() -> projectMissionItemService.count(
+                    projectMissionItemQueryWrapper.eq("create_by", loginUser.getUsername())
+                    .in("project_status", missionItemStatusList)
+            ));
+            projectMissionItemQueryWrapper.clear();
             //get阻塞
-            Integer pending = pendingFuture.get();
+            Long pending = pendingFuture.get();
             jsonObject.put("pending", pending);
+
+            // 超时未完成
+            Future<Long> timeoutFuture = executor.submit(() -> projectMissionItemService.count(
+                    projectMissionItemQueryWrapper.eq("create_by", loginUser.getUsername())
+            ));
+            projectMissionItemQueryWrapper.clear();
+            Long timeout = timeoutFuture.get();
+            jsonObject.put("timeout", timeout);
+
+            // 参与的项目
+            missionItemStatusList.remove(MissionItemStatus.getCode("进行中"));
+            Future<Long> participateFuture = executor.submit(() -> projectMissionItemService.count(
+                    projectMissionItemQueryWrapper.eq("create_by", loginUser.getUsername())
+            ));
+            projectMissionItemQueryWrapper.clear();
+            Long participate = participateFuture.get();
+            jsonObject.put("participate", participate);
+
         } catch (InterruptedException | ExecutionException e) {
             log.error(">>>>>>聚合查询首页信息异常:" + e + "<<<<<<<<<");
         }

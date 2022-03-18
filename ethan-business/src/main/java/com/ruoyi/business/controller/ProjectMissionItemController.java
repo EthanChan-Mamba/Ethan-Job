@@ -4,9 +4,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.business.annotation.ProjectLog;
 import com.ruoyi.business.enums.BusinessTypeWithName;
-import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.business.futureTask.ProjectItemsFutureTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,11 @@ public class ProjectMissionItemController extends BaseController
 
     @Autowired
     private IProjectMissionItemService projectMissionItemService;
+    private ProjectItemsFutureTask projectItemsFutureTask;
+    @Autowired
+    public void setProjectItemsFutureTask(ProjectItemsFutureTask projectItemsFutureTask) {
+        this.projectItemsFutureTask = projectItemsFutureTask;
+    }
 
     @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:view')")
     @GetMapping()
@@ -49,7 +55,19 @@ public class ProjectMissionItemController extends BaseController
     @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:list')")
     @GetMapping("/list")
     @ResponseBody
-    public TableDataInfo list(ProjectMissionItem projectMissionItem)
+    public AjaxResult list(ProjectMissionItem projectMissionItem)
+    {
+        JSONObject homePageResult = projectItemsFutureTask.getHomePageCardResult(projectMissionItem);
+        return AjaxResult.success(homePageResult);
+    }
+
+    /**
+     * 查询任务项目个体列表
+     */
+    @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:list')")
+    @GetMapping("/list")
+    @ResponseBody
+    public TableDataInfo listNumsWithMissionList(ProjectMissionItem projectMissionItem)
     {
         startPage();
         List<ProjectMissionItem> list = projectMissionItemService.selectProjectMissionItemList(projectMissionItem);
