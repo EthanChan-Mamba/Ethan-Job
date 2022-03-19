@@ -44,7 +44,7 @@ public class ProjectItemsFutureTask {
     private ThreadPoolTaskExecutor executor = SpringUtils.getBean("threadPoolTaskExecutor");
 
     @SuppressWarnings("all")
-    public JSONObject getHomePageCardResult(ProjectMissionItem projectMissionItem) {
+    public JSONObject getHomePageCardResult() {
         log.info("首页查询");
         JSONObject jsonObject = new JSONObject();
         try {
@@ -58,7 +58,7 @@ public class ProjectItemsFutureTask {
             missionItemStatusList.add(MissionItemStatus.getCode("延期"));
             Future<Long> pendingFuture = executor.submit(() -> projectMissionItemService.count(
                     projectMissionItemQueryWrapper.eq("create_by", loginUser.getUsername())
-                    .in("project_status", missionItemStatusList)
+                    .in("mission_item_status", missionItemStatusList)
             ));
             projectMissionItemQueryWrapper.clear();
             //get阻塞
@@ -66,6 +66,7 @@ public class ProjectItemsFutureTask {
             jsonObject.put("pending", pending);
 
             // 超时未完成
+            missionItemStatusList.remove(MissionItemStatus.getCode("进行中"));
             Future<Long> timeoutFuture = executor.submit(() -> projectMissionItemService.count(
                     projectMissionItemQueryWrapper.eq("create_by", loginUser.getUsername())
             ));
@@ -73,8 +74,7 @@ public class ProjectItemsFutureTask {
             Long timeout = timeoutFuture.get();
             jsonObject.put("timeout", timeout);
 
-            // 参与的项目
-            missionItemStatusList.remove(MissionItemStatus.getCode("进行中"));
+            // 总任务数
             Future<Long> participateFuture = executor.submit(() -> projectMissionItemService.count(
                     projectMissionItemQueryWrapper.eq("create_by", loginUser.getUsername())
             ));

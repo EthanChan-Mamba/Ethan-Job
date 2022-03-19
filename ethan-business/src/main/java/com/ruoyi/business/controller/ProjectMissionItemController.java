@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.business.annotation.ProjectLog;
 import com.ruoyi.business.enums.BusinessTypeWithName;
 import com.ruoyi.business.futureTask.ProjectItemsFutureTask;
+import com.ruoyi.common.core.page.TableDataInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,6 @@ import com.ruoyi.business.service.IProjectMissionItemService;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 任务项目个体Controller
@@ -51,27 +51,29 @@ public class ProjectMissionItemController extends BaseController
 
     /**
      * 查询任务项目个体列表
+     * @return
      */
     @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:list')")
     @GetMapping("/list")
     @ResponseBody
-    public AjaxResult list(ProjectMissionItem projectMissionItem)
-    {
-        JSONObject homePageResult = projectItemsFutureTask.getHomePageCardResult(projectMissionItem);
-        return AjaxResult.success(homePageResult);
-    }
-
-    /**
-     * 查询任务项目个体列表
-     */
-    @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:list')")
-    @GetMapping("/list")
-    @ResponseBody
-    public TableDataInfo listNumsWithMissionList(ProjectMissionItem projectMissionItem)
+    public TableDataInfo list(ProjectMissionItem projectMissionItem)
     {
         startPage();
         List<ProjectMissionItem> list = projectMissionItemService.selectProjectMissionItemList(projectMissionItem);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询任务项目个体列表
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:list')")
+    @GetMapping("/listNumsWithMissionList")
+    @ResponseBody
+    public AjaxResult listNumsWithMissionList()
+    {
+        JSONObject homePageResult = projectItemsFutureTask.getHomePageCardResult();
+        return AjaxResult.success(homePageResult);
     }
 
     /**
