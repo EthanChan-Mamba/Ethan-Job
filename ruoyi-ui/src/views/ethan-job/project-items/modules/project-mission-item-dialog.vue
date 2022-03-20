@@ -79,7 +79,7 @@ defineExpose({
 })
 /** 取消按钮 */
 function cancel() {
-  open.value = false;
+  open = false;
 }
 /** 提交按钮 */
 function submitForm() {
@@ -90,7 +90,7 @@ function submitForm() {
          addProjectMissionItem(form.value).then(response => {
             if (response.code == 200) {
                proxy.$modal.msgSuccess("新增成功");
-               open.value = false;
+               open = false;
                emit('ok', dialogProjectItemId)
             }
          });

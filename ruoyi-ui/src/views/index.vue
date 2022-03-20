@@ -10,21 +10,21 @@
       
       <el-row :gutter="20">
           <el-col :span="8" :xs="24">
-            <el-card class="card-item card-item-pending">
+            <el-card class="card-item card-item-pending" @click="getMissionList('pending')">
               <p class="card-title">今日待完成</p>
-              <span class="card-number">6</span>
+              <span class="card-number">{{ cardData.pending }}</span>
             </el-card>
           </el-col>
           <el-col :span="8" :xs="24">
-            <el-card class="card-item card-item-overtime">
+            <el-card class="card-item card-item-overtime" @click="getMissionList('timeout')">
               <p class="card-title">超期未完成</p>
-              <span class="card-number">6</span>
+              <span class="card-number">{{ cardData.timeout }}</span>
             </el-card>
           </el-col>
           <el-col :span="8" :xs="24">
             <el-card class="card-item" shadow="always">
-              <p class="card-title">参与的项目</p>
-              <span class="card-number">6</span>
+              <p class="card-title">总任务数</p>
+              <span class="card-number">{{ cardData.participate }}</span>
             </el-card>
           </el-col>
       </el-row>
@@ -42,13 +42,13 @@
           <li v-for="(item, index) in unfinishList" :key="index" class="list-item">
             <el-row :gutter="20">
               <el-col :span="8" :xs="24">
-                <span>{{ index }}</span>
+                <span>{{ index + 1 }}</span>
               </el-col>
               <el-col :span="8" :xs="24">
                 <span>{{item.title}}</span>
               </el-col>
-              <el-col :span="8" :xs="24">
-              </el-col>
+              <!-- <el-col :span="8" :xs="24">
+              </el-col> -->
           </el-row>
           </li>
         </ul>
@@ -61,7 +61,7 @@
 <script>
 import { timeFix } from '@/utils/util'
 import { getUserProfile } from "@/api/system/user"
-import { listHomePage } from "@/api/ethan-business/projectItems"
+import { listProjectMissionItem, listNumsWithMissionList } from "@/api/ethan-business/projectMissionItem"
 // const version = ref('3.8.1')
 export default {
   name: 'Index',
@@ -77,9 +77,21 @@ export default {
           deptName: ''
         }
       },
+      cardData: {
+        pending: 0,
+        timeout: 0,
+        participate: 0
+      },
       timeFix: timeFix(),
       roleGroup: {},
       postGroup: {},
+      queryParams: {
+        pageNum: 1,
+        pageSize: 6,
+        params: {
+          status: []
+        }
+      },
       unfinishList: [
         {
           title: 'NIO',
@@ -118,9 +130,8 @@ export default {
   },
   created () {
     this.getUser()
-    listHomePage({projectId: 1}).then(response => {
-      console.log('listHomePage', response)
-    })
+    this.getListNumsWithMissionList()
+    this.getMissionList('pending')
   },
   mounted () {},
   methods: {
@@ -130,6 +141,22 @@ export default {
         this.user = response.data
         this.roleGroup = response.roleGroup
         this.postGroup = response.postGroup
+      })
+    },
+    getListNumsWithMissionList () {
+      listNumsWithMissionList().then(response => {
+        this.cardData = response.data
+      })
+    },
+    getMissionList (statu) {
+      if (statu === 'pending') {
+        this.queryParams.params.status.push('进行中')
+      } else if (statu === 'timeout') {
+        this.queryParams.params.status.push('超时')
+        this.queryParams.params.status.push('延期')
+      }
+      listProjectMissionItem(this.queryParams).then(response => {
+        console.log('response', response)
       })
     }
   }
@@ -158,6 +185,7 @@ export default {
   }
   .card-item {
     border-radius: 16px;
+    cursor: pointer;
   }
   .card-item-pending {
     border-radius: 16px;

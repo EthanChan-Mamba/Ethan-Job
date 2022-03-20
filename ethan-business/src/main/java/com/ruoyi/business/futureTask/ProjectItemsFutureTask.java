@@ -2,28 +2,21 @@ package com.ruoyi.business.futureTask;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ruoyi.business.domain.ProjectItems;
 import com.ruoyi.business.domain.ProjectMissionItem;
 import com.ruoyi.business.enums.MissionItemStatus;
-import com.ruoyi.business.enums.ProjectStatus;
-import com.ruoyi.business.service.IProjectItemsService;
 import com.ruoyi.business.service.IProjectMissionItemService;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.stream.Collectors;
 
 /**
  * @author chen
