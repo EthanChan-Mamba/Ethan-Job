@@ -62,6 +62,7 @@ public class ProjectItemsFutureTask {
             missionItemStatusList.remove(MissionItemStatus.getCode("进行中"));
             Future<Long> timeoutFuture = executor.submit(() -> projectMissionItemService.count(
                     projectMissionItemQueryWrapper.eq("create_by", loginUser.getUsername())
+                    .in("mission_item_status", missionItemStatusList)
             ));
             projectMissionItemQueryWrapper.clear();
             Long timeout = timeoutFuture.get();

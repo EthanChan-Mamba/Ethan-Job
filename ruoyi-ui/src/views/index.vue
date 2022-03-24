@@ -40,15 +40,16 @@
           infinite-scroll-disabled="disabled"
         >
           <li v-for="(item, index) in unfinishList" :key="index" class="list-item">
-            <el-row :gutter="20">
-              <el-col :span="8" :xs="24">
+            <el-row :gutter="48" style="width: 100%;">
+              <el-col :span="2" :xs="24">
                 <span>{{ index + 1 }}</span>
               </el-col>
-              <el-col :span="8" :xs="24">
-                <span>{{item.title}}</span>
+              <el-col :span="10" :xs="24" style="text-align: left;">
+                <span>{{ item.missionItemName }}</span>
               </el-col>
-              <!-- <el-col :span="8" :xs="24">
-              </el-col> -->
+              <el-col :span="8" :xs="24">
+                <span>{{ item.finishTimeStart }} - {{ item.finishTimeEnd }}</span>
+              </el-col>
           </el-row>
           </li>
         </ul>
@@ -157,6 +158,7 @@ export default {
       }
       listProjectMissionItem(this.queryParams).then(response => {
         console.log('response', response)
+        this.unfinishList = response.rows
       })
     }
   }
@@ -237,6 +239,7 @@ export default {
   }
 
   .infinite-list-wrapper .list-item {
+    width: 100%;
     display: flex;
     // align-items: center;
     // justify-content: center;

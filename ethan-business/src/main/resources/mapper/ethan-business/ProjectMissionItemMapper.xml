@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="finishTimeEnd != null "> and finish_time_end = #{finishTimeEnd}</if>
             <if test="projectMissionTypeId != null "> and project_mission_type_id = #{projectMissionTypeId}</if>
         </where>
-        ORDER BY create_time
+        ORDER BY create_time DESC
     </select>
 
     <select id="selectProjectMissionItemByMissionItemId" parameterType="Long" resultMap="ProjectMissionItemResult">
