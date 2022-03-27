@@ -1,9 +1,10 @@
 package com.ruoyi.business.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.MPBaseEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 项目动态对象 project_news
@@ -18,6 +19,7 @@ public class ProjectNews extends MPBaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 项目动态id */
+    @TableId
     private Integer newsId;
 
     /** 动态名称 */

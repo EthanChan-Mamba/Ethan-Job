@@ -5,14 +5,10 @@ package com.ruoyi.business.enums;
  *
  * @author ruoyi
  */
-public enum ProjectStatus
+public enum ProjectStatusEnum
 {
     /**
-     * 失效
-     */
-    FAILURE(-1, "失效"),
-    /**
-     * 失效
+     * 未开始
      */
     NOTBEGIN(0, "未开始"),
     /**
@@ -30,12 +26,16 @@ public enum ProjectStatus
     /**
      * 完成
      */
-    COMPLETE(4, "完成");
+    COMPLETE(4, "完成"),
+    /**
+     * 失效
+     */
+    FAILURE(5 , "失效");
 
     private final int code;
     private final String info;
 
-    ProjectStatus(int code, String info)
+    ProjectStatusEnum(int code, String info)
     {
         this.code = code;
         this.info = info;
@@ -52,8 +52,8 @@ public enum ProjectStatus
     }
 
     public static Integer getCode(String info) {
-        ProjectStatus[] missionItemStatusArray = values();
-        for (ProjectStatus missionItemStatus : missionItemStatusArray) {
+        ProjectStatusEnum[] missionItemStatusArray = values();
+        for (ProjectStatusEnum missionItemStatus : missionItemStatusArray) {
             if (missionItemStatus.getInfo().equals(info)) {
                 return missionItemStatus.getCode();
             }
@@ -62,8 +62,8 @@ public enum ProjectStatus
     }
 
     public static String getType(int code) {
-        ProjectStatus[] missionItemStatusArray = values();
-        for (ProjectStatus missionItemStatus : missionItemStatusArray) {
+        ProjectStatusEnum[] missionItemStatusArray = values();
+        for (ProjectStatusEnum missionItemStatus : missionItemStatusArray) {
             if (missionItemStatus.getCode() == code) {
                 return missionItemStatus.getInfo();
             }

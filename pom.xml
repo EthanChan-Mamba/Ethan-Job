@@ -36,11 +36,17 @@
         <jwt.version>0.9.1</jwt.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <lombok.version>1.18.12</lombok.version>
+        <hutool.version>5.7.22</hutool.version>
     </properties>
 
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
 
             <!-- SpringBoot的依赖配置-->
             <dependency>
