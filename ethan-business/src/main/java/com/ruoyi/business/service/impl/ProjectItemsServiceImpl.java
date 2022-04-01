@@ -1,13 +1,14 @@
 package com.ruoyi.business.service.impl;
 
-import java.util.List;
-
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.business.domain.ProjectItems;
+import com.ruoyi.business.mapper.ProjectItemsMapper;
+import com.ruoyi.business.service.IProjectItemsService;
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.business.mapper.ProjectItemsMapper;
-import com.ruoyi.business.domain.ProjectItems;
-import com.ruoyi.business.service.IProjectItemsService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import java.util.List;
 
 /**
  * projectItemsService业务层处理
@@ -30,6 +31,8 @@ public class ProjectItemsServiceImpl extends ServiceImpl<ProjectItemsMapper, Pro
     @Override
     public List<ProjectItems> selectProjectItemsList(ProjectItems projectItems)
     {
+        String username = SecurityUtils.getUsername();
+        projectItems.setCreateBy(username);
         return projectItemsMapper.selectProjectItemsList(projectItems);
     }
 

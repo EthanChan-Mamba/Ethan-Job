@@ -10,6 +10,15 @@ export function listProjectMissionItem(query) {
 }
 
 // 查询任务项目个体列表
+export function listMissionListByUserid(query) {
+  return request({
+    url: '/ethan-business/ProjectMissionItem/listMissionListByUserid',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询任务项目个体列表
 export function listNumsWithMissionList(query) {
   return request({
     url: '/ethan-business/ProjectMissionItem/listNumsWithMissionList',

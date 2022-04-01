@@ -35,6 +35,7 @@
         <span>任务列表</span>
       </template>
       <div class="infinite-list-wrapper" style="overflow: auto">
+        <el-empty :image-size="160" v-if="unfinishList.length === 0" description="暂无任务列表信息，请去添加任务"></el-empty>
         <ul
           class="list"
           infinite-scroll-disabled="disabled"
@@ -62,7 +63,7 @@
 <script>
 import { timeFix } from '@/utils/util'
 import { getUserProfile } from "@/api/system/user"
-import { listProjectMissionItem, listNumsWithMissionList } from "@/api/ethan-business/projectMissionItem"
+import { listProjectMissionItem, listNumsWithMissionList, listMissionListByUserid } from "@/api/ethan-business/projectMissionItem"
 // const version = ref('3.8.1')
 export default {
   name: 'Index',
@@ -156,7 +157,7 @@ export default {
         this.queryParams.params.status.push('超时')
         this.queryParams.params.status.push('延期')
       }
-      listProjectMissionItem(this.queryParams).then(response => {
+      listMissionListByUserid(this.queryParams).then(response => {
         console.log('response', response)
         this.unfinishList = response.rows
       })

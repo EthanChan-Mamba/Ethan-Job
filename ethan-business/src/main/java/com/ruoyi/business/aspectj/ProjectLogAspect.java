@@ -4,7 +4,7 @@ import com.ruoyi.business.annotation.ProjectLog;
 import com.ruoyi.business.domain.ProjectMissionItem;
 import com.ruoyi.business.domain.ProjectNews;
 import com.ruoyi.business.enums.BusinessTypeWithName;
-import com.ruoyi.business.enums.MissionItemStatus;
+import com.ruoyi.business.enums.MissionItemStatusEnum;
 import com.ruoyi.business.service.IProjectNewsService;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -68,7 +68,7 @@ public class ProjectLogAspect {
             if (BusinessTypeWithName.UPDATE.getCode().equals(businessTypeWithName.getCode())) {
                 // 更新的状态
                 assert args != null;
-                newsContent.append("状态为：").append(MissionItemStatus.getType(args.getMissionItemStatus())).append("; ");
+                newsContent.append("状态为：").append(MissionItemStatusEnum.getType(args.getMissionItemStatus())).append("; ");
                 news.setUpdateBy(loginUser.getUsername());
                 news.setUpdateTime(new Date());
             }

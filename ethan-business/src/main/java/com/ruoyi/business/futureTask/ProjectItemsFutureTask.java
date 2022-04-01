@@ -3,7 +3,7 @@ package com.ruoyi.business.futureTask;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.business.domain.ProjectMissionItem;
-import com.ruoyi.business.enums.MissionItemStatus;
+import com.ruoyi.business.enums.MissionItemStatusEnum;
 import com.ruoyi.business.service.IProjectMissionItemService;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -46,9 +46,9 @@ public class ProjectItemsFutureTask {
             List<Integer> missionItemStatusList = new ArrayList<>();
 
             // 今日待完成
-            missionItemStatusList.add(MissionItemStatus.getCode("进行中"));
-            missionItemStatusList.add(MissionItemStatus.getCode("超时"));
-            missionItemStatusList.add(MissionItemStatus.getCode("延期"));
+            missionItemStatusList.add(MissionItemStatusEnum.getCode("进行中"));
+            missionItemStatusList.add(MissionItemStatusEnum.getCode("超时"));
+            missionItemStatusList.add(MissionItemStatusEnum.getCode("延期"));
             Future<Long> pendingFuture = executor.submit(() -> projectMissionItemService.count(
                     projectMissionItemQueryWrapper.eq("create_by", loginUser.getUsername())
                     .in("mission_item_status", missionItemStatusList)
@@ -59,7 +59,7 @@ public class ProjectItemsFutureTask {
             jsonObject.put("pending", pending);
 
             // 超时未完成
-            missionItemStatusList.remove(MissionItemStatus.getCode("进行中"));
+            missionItemStatusList.remove(MissionItemStatusEnum.getCode("进行中"));
             Future<Long> timeoutFuture = executor.submit(() -> projectMissionItemService.count(
                     projectMissionItemQueryWrapper.eq("create_by", loginUser.getUsername())
                     .in("mission_item_status", missionItemStatusList)

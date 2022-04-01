@@ -31,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectStatus != null "> and project_status = #{projectStatus}</if>
             <if test="finishTimeStart != null "> and finish_time_start = #{finishTimeStart}</if>
             <if test="finishTimeEnd != null "> and finish_time_end = #{finishTimeEnd}</if>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
         </where>
     </select>
 

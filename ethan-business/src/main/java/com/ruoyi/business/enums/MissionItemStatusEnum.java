@@ -5,7 +5,7 @@ package com.ruoyi.business.enums;
  *
  * @author ruoyi
  */
-public enum MissionItemStatus
+public enum MissionItemStatusEnum
 {
     /**
      * 进行中
@@ -31,7 +31,7 @@ public enum MissionItemStatus
     private final int code;
     private final String info;
 
-    MissionItemStatus(int code, String info)
+    MissionItemStatusEnum(int code, String info)
     {
         this.code = code;
         this.info = info;
@@ -48,8 +48,8 @@ public enum MissionItemStatus
     }
 
     public static Integer getCode(String info) {
-        MissionItemStatus[] missionItemStatusArray = values();
-        for (MissionItemStatus missionItemStatus : missionItemStatusArray) {
+        MissionItemStatusEnum[] missionItemStatusArray = values();
+        for (MissionItemStatusEnum missionItemStatus : missionItemStatusArray) {
             if (missionItemStatus.getInfo().equals(info)) {
                 return missionItemStatus.getCode();
             }
@@ -58,8 +58,8 @@ public enum MissionItemStatus
     }
 
     public static String getType(int code) {
-        MissionItemStatus[] missionItemStatusArray = values();
-        for (MissionItemStatus missionItemStatus : missionItemStatusArray) {
+        MissionItemStatusEnum[] missionItemStatusArray = values();
+        for (MissionItemStatusEnum missionItemStatus : missionItemStatusArray) {
             if (missionItemStatus.getCode() == code) {
                 return missionItemStatus.getInfo();
             }
