@@ -19,7 +19,7 @@
 </template>
 
 <script setup name="ProjectMissionItemCard">
-import ProjectMissionItemTags from "./project-mission-item-tags.vue"
+import ProjectMissionItemTags from "./projectMissionItemTags.vue"
 
 const { proxy } = getCurrentInstance();
 

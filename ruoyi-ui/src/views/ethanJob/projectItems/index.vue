@@ -50,8 +50,8 @@
 
 <script setup name="ProjectItems">
 import { listProjectItemsNoPage } from "@/api/ethan-business/projectItems";
-import projectItemDialog from "./modules/project-item-dialog.vue"
-import ProjectMissionItemCardModule from "./modules/project-mission-item-card.vue"
+import projectItemDialog from "./modules/projectItemDialog.vue"
+import ProjectMissionItemCardModule from "./modules/projectMissionItemCard.vue"
 
 const { proxy } = getCurrentInstance();
 
