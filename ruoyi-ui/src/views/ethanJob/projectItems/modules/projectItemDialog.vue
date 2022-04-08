@@ -39,7 +39,7 @@
 </template>
 
 <script setup name="ProjectItemsDialog">
-import { addProjectItems } from "@/api/ethan-business/projectItems";
+import { addProjectItems } from "@/api/ethanBusiness/projectItems";
 
 const { proxy } = getCurrentInstance();
 

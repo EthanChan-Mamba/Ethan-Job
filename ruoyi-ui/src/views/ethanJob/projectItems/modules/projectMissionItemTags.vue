@@ -12,9 +12,9 @@
 </template>
 
 <script setup name="ProjectMissionItemsTags">
-import { addProjectItems } from "@/api/ethan-business/projectItems";
-import ProjectMissionItemList from "./project-mission-item-list.vue"
-import ProjectLog from "./project-log.vue"
+import { addProjectItems } from "@/api/ethanBusiness/projectItems";
+import ProjectMissionItemList from "./projectMissionItemList"
+import ProjectLog from "./projectLog"
 
 const { proxy } = getCurrentInstance();
 

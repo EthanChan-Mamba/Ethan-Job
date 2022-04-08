@@ -49,7 +49,7 @@
 </template>
 
 <script setup name="ProjectItems">
-import { listProjectItemsNoPage } from "@/api/ethan-business/projectItems";
+import { listProjectItemsNoPage } from "@/api/ethanBusiness/projectItems";
 import projectItemDialog from "./modules/projectItemDialog.vue"
 import ProjectMissionItemCardModule from "./modules/projectMissionItemCard.vue"
 

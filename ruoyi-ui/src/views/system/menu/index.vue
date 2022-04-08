@@ -6,12 +6,11 @@
                v-model="queryParams.menuName"
                placeholder="请输入菜单名称"
                clearable
-               size="small"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
          <el-form-item label="状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="small">
+            <el-select v-model="queryParams.status" placeholder="菜单状态" clearable>
                <el-option
                   v-for="dict in sys_normal_disable"
                   :key="dict.value"
@@ -21,8 +20,8 @@
             </el-select>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
@@ -32,7 +31,6 @@
                type="primary"
                plain
                icon="Plus"
-               size="mini"
                @click="handleAdd"
                v-hasPermi="['system:menu:add']"
             >新增</el-button>
@@ -42,7 +40,6 @@
                type="info"
                plain
                icon="Sort"
-               size="mini"
                @click="toggleExpandAll"
             >展开/折叠</el-button>
          </el-col>
@@ -79,21 +76,18 @@
          <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  size="mini"
                   type="text"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:menu:edit']"
                >修改</el-button>
                <el-button
-                  size="mini"
                   type="text"
                   icon="Plus"
                   @click="handleAdd(scope.row)"
                   v-hasPermi="['system:menu:add']"
                >新增</el-button>
                <el-button
-                  size="mini"
                   type="text"
                   icon="Delete"
                   @click="handleDelete(scope.row)"
@@ -104,7 +98,7 @@
       </el-table>
 
       <!-- 添加或修改菜单对话框 -->
-      <el-dialog :title="title" v-model="open" width="680px" append-to-body>
+      <el-dialog :title="title" v-model="open" width="680px" :before-close="handleClose" append-to-body>
          <el-form ref="menuRef" :model="form" :rules="rules" label-width="100px">
             <el-row>
                <el-col :span="24">
@@ -135,9 +129,8 @@
                         trigger="click"
                         @show="showSelectIcon"
                      >
-                        <icon-select ref="iconSelectRef" @selected="selected" />
                         <template #reference>
-                           <el-input v-model="form.icon" placeholder="点击选择图标" readonly>
+                           <el-input v-model="form.icon" placeholder="点击选择图标" @click="showSelectIcon" readonly>
                               <template #prefix>
                                  <svg-icon
                                     v-if="form.icon"
@@ -145,10 +138,11 @@
                                     class="el-input__icon"
                                     style="height: 32px;width: 16px;"
                                  />
-                                 <i v-else class="el-icon-search el-input__icon" />
+                                 <el-icon v-else style="height: 32px;width: 16px;"><search /></el-icon>
                               </template>
                            </el-input>
                         </template>
+                        <icon-select ref="iconSelectRef" @selected="selected" />
                      </el-popover>
                   </el-form-item>
                </el-col>
@@ -167,7 +161,7 @@
                      <template #label>
                         <span>
                            <el-tooltip content="选择是外链则路由地址需要以`http(s)://`开头" placement="top">
-                              <i class="el-icon-question"></i>
+                              <el-icon><question-filled /></el-icon>
                            </el-tooltip>是否外链
                         </span>
                      </template>
@@ -182,7 +176,7 @@
                      <template #label>
                         <span>
                            <el-tooltip content="访问的路由地址，如：`user`，如外网地址需内链访问则以`http(s)://`开头" placement="top">
-                              <i class="el-icon-question"></i>
+                              <el-icon><question-filled /></el-icon>
                            </el-tooltip>
                            路由地址
                         </span>
@@ -195,7 +189,7 @@
                      <template #label>
                         <span>
                            <el-tooltip content="访问的组件路径，如：`system/user/index`，默认在`views`目录下" placement="top">
-                              <i class="el-icon-question"></i>
+                              <el-icon><question-filled /></el-icon>
                            </el-tooltip>
                            组件路径
                         </span>
@@ -209,7 +203,7 @@
                      <template #label>
                         <span>
                            <el-tooltip content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasPermi('system:user:list')`)" placement="top">
-                              <i class="el-icon-question"></i>
+                              <el-icon><question-filled /></el-icon>
                            </el-tooltip>
                            权限字符
                         </span>
@@ -222,7 +216,7 @@
                      <template #label>
                         <span>
                            <el-tooltip content='访问路由的默认传递参数，如：`{"id": 1, "name": "ry"}`' placement="top">
-                              <i class="el-icon-question"></i>
+                              <el-icon><question-filled /></el-icon>
                            </el-tooltip>
                            路由参数
                         </span>
@@ -234,7 +228,7 @@
                      <template #label>
                         <span>
                            <el-tooltip content="选择是则会被`keep-alive`缓存，需要匹配组件的`name`和地址保持一致" placement="top">
-                              <i class="el-icon-question"></i>
+                              <el-icon><question-filled /></el-icon>
                            </el-tooltip>
                            是否缓存
                         </span>
@@ -250,7 +244,7 @@
                      <template #label>
                         <span>
                            <el-tooltip content="选择隐藏则路由将不会出现在侧边栏，但仍然可以访问" placement="top">
-                              <i class="el-icon-question"></i>
+                              <el-icon><question-filled /></el-icon>
                            </el-tooltip>
                            显示状态
                         </span>
@@ -269,7 +263,7 @@
                      <template #label>
                         <span>
                            <el-tooltip content="选择停用则路由将不会出现在侧边栏，也不能被访问" placement="top">
-                              <i class="el-icon-question"></i>
+                              <el-icon><question-filled /></el-icon>
                            </el-tooltip>
                            菜单状态
                         </span>
@@ -375,6 +369,11 @@ function showSelectIcon() {
 /** 选择图标 */
 function selected(name) {
   form.value.icon = name;
+  showChooseIcon.value = false;
+}
+/** 关闭弹窗隐藏图标选择 */
+function handleClose() {
+  cancel();
   showChooseIcon.value = false;
 }
 /** 搜索按钮操作 */

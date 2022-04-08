@@ -12,7 +12,7 @@
 </template>
 
 <script setup name="ProjectLog">
-import { listProjectNewsByProjectId } from "@/api/ethan-business/projectNews";
+import { listProjectNewsByProjectId } from "@/api/ethanBusiness/projectNews";
 
 const { proxy } = getCurrentInstance();
 let ProjectMissionItemDialogRef = $ref(null)

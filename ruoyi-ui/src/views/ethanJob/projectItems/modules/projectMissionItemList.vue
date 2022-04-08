@@ -57,9 +57,9 @@
 
 <script setup name="ProjectMissionItemList">
 import { Search } from '@element-plus/icons-vue'
-import { addProjectItems } from "@/api/ethan-business/projectItems";
-import ProjectMissionItemDialog from "./project-mission-item-dialog.vue"
-import { listProjectMissionItem, updateProjectMissionItem } from "@/api/ethan-business/projectMissionItem";
+import { addProjectItems } from "@/api/ethanBusiness/projectItems";
+import ProjectMissionItemDialog from "./projectMissionItemDialog"
+import { listProjectMissionItem, updateProjectMissionItem } from "@/api/ethanBusiness/projectMissionItem";
 
 const { proxy } = getCurrentInstance();
 const { mission_item_status } = proxy.useDict("mission_item_status");
@@ -68,7 +68,7 @@ let ProjectMissionItemDialogRef = $ref(null)
 let tableData = $ref([])
 const open = ref(false);
 const title = ref("");
-const projectItemId = $ref("");
+let projectItemId = $ref("");
 
 const data = reactive({
   form: {

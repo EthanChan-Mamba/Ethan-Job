@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <div class="dashboard-hello">{{ timeFix }},{{ user.nickName }}</div>
+          <div class="dashboard-hello">{{ timeFixWord }},{{ user.nickName }}</div>
         </div>
       </template>
       <p class="front-card">任务数据如下：</p>
@@ -60,110 +60,95 @@
 </template>
 
 
-<script>
+<script setup name="Index">
 import { timeFix } from '@/utils/util'
 import { getUserProfile } from "@/api/system/user"
-import { listProjectMissionItem, listNumsWithMissionList, listMissionListByUserid } from "@/api/ethan-business/projectMissionItem"
+import { listProjectMissionItem, listNumsWithMissionList, listMissionListByUserid } from "@/api/ethanBusiness/projectMissionItem"
 // const version = ref('3.8.1')
-export default {
-  name: 'Index',
-  components: {
-  },
-  data () {
-    return {
-      noMore: false,
-      count: 10,
-      // 用户信息
-      user: {
-        dept: {
-          deptName: ''
-        }
-      },
-      cardData: {
-        pending: 0,
-        timeout: 0,
-        participate: 0
-      },
-      timeFix: timeFix(),
-      roleGroup: {},
-      postGroup: {},
-      queryParams: {
-        pageNum: 1,
-        pageSize: 6,
-        params: {
-          status: []
-        }
-      },
-      unfinishList: [
-        {
-          title: 'NIO',
-          startTime: '2022-06-22 10:00:00',
-          endTime: '2022-06-22 10:00:00'
-        },
-        {
-          title: 'NIO',
-          startTime: '2022-06-22 10:00:00',
-          endTime: '2022-06-22 10:00:00'
-        },
-        {
-          title: 'NIO',
-          startTime: '2022-06-22 10:00:00',
-          endTime: '2022-06-22 10:00:00'
-        },
-        {
-          title: 'NIO',
-          startTime: '2022-06-22 10:00:00',
-          endTime: '2022-06-22 10:00:00'
-        },
-        {
-          title: 'NIO',
-          startTime: '2022-06-22 10:00:00',
-          endTime: '2022-06-22 10:00:00'
-        },
-        {
-          title: 'NIO',
-          startTime: '2022-06-22 10:00:00',
-          endTime: '2022-06-22 10:00:00'
-        }
-      ]
-    }
-  },
-  computed: {
-  },
-  created () {
-    this.getUser()
-    this.getListNumsWithMissionList()
-    this.getMissionList('pending')
-  },
-  mounted () {},
-  methods: {
-    // 获取用户信息
-    getUser () {
-      getUserProfile().then(response => {
-        this.user = response.data
-        this.roleGroup = response.roleGroup
-        this.postGroup = response.postGroup
-      })
-    },
-    getListNumsWithMissionList () {
-      listNumsWithMissionList().then(response => {
-        this.cardData = response.data
-      })
-    },
-    getMissionList (statu) {
-      if (statu === 'pending') {
-        this.queryParams.params.status.push('进行中')
-      } else if (statu === 'timeout') {
-        this.queryParams.params.status.push('超时')
-        this.queryParams.params.status.push('延期')
-      }
-      listMissionListByUserid(this.queryParams).then(response => {
-        console.log('response', response)
-        this.unfinishList = response.rows
-      })
-    }
+const { proxy } = getCurrentInstance();
+let noMore = $ref(false);
+let count = $ref(10);
+let user = $ref({
+  dept: {
+    deptName: ''
   }
+});
+let cardData = $ref({
+  pending: 0,
+  timeout: 0,
+  participate: 0
+});
+let timeFixWord = $ref(timeFix());
+let roleGroup = $ref({});
+let postGroup = $ref({});
+let queryParams = $ref({
+  pageNum: 1,
+  pageSize: 6,
+  params: {
+    status: []
+  }
+});
+let unfinishList = $ref([
+  {
+    title: 'NIO',
+    startTime: '2022-06-22 10:00:00',
+    endTime: '2022-06-22 10:00:00'
+  },
+  {
+    title: 'NIO',
+    startTime: '2022-06-22 10:00:00',
+    endTime: '2022-06-22 10:00:00'
+  },
+  {
+    title: 'NIO',
+    startTime: '2022-06-22 10:00:00',
+    endTime: '2022-06-22 10:00:00'
+  },
+  {
+    title: 'NIO',
+    startTime: '2022-06-22 10:00:00',
+    endTime: '2022-06-22 10:00:00'
+  },
+  {
+    title: 'NIO',
+    startTime: '2022-06-22 10:00:00',
+    endTime: '2022-06-22 10:00:00'
+  },
+  {
+    title: 'NIO',
+    startTime: '2022-06-22 10:00:00',
+    endTime: '2022-06-22 10:00:00'
+  }
+]);
+
+// 获取用户信息
+function getUser () {
+  getUserProfile().then(response => {
+    user = response.data
+    roleGroup = response.roleGroup
+    postGroup = response.postGroup
+  })
 }
+function getListNumsWithMissionList () {
+  listNumsWithMissionList().then(response => {
+    cardData = response.data
+  })
+}
+function getMissionList (statu) {
+  if (statu === 'pending') {
+    queryParams.params.status.push('进行中')
+  } else if (statu === 'timeout') {
+    queryParams.params.status.push('超时')
+    queryParams.params.status.push('延期')
+  }
+  listMissionListByUserid(queryParams).then(response => {
+    console.log('response', response)
+    unfinishList = response.rows
+  })
+}
+getUser()
+getListNumsWithMissionList()
+getMissionList('pending')
 </script>
 
 <style scoped lang="scss">

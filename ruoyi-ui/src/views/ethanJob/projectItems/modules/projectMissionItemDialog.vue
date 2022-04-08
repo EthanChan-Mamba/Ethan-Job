@@ -52,14 +52,14 @@
 </template>
 
 <script setup name="ProjectMissionItemsDialog">
-import { addProjectMissionItem } from "@/api/ethan-business/projectMissionItem";
+import { addProjectMissionItem } from "@/api/ethanBusiness/projectMissionItem";
 
 const { proxy } = getCurrentInstance();
 const emit = defineEmits();
 
-const open = $ref(false);
+let open = $ref(false);
 const title = ref('');
-const dialogProjectItemId = $ref('');
+let dialogProjectItemId = $ref('');
 
 const data = reactive({
    form: {
