@@ -88,7 +88,7 @@ function getPorjectselect() {
    });
 };
 function newProjectItem() {
-   projectItemDialogRef.value.openDialog()
+   projectItemDialogRef.value.openDialog(null)
 }
 
 getPorjectselect();

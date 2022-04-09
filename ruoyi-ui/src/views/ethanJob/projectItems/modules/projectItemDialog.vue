@@ -94,7 +94,7 @@ function submitForm() {
    });
 }
 /** 打开窗口 */
-function openDialog() {
+function openDialog(record) {
   open.value = true;
 }
 

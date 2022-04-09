@@ -1,24 +1,26 @@
 package com.ruoyi.business.controller;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.business.domain.ProjectItems;
-import com.ruoyi.business.futureTask.ProjectItemsFutureTask;
+import com.ruoyi.business.enums.ProjectStatusEnum;
+import com.ruoyi.business.service.IProjectItemsService;
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.business.service.IProjectItemsService;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * projectItemsController
@@ -52,7 +54,12 @@ public class ProjectItemsController extends BaseController
     {
         startPage();
         List<ProjectItems> list = projectItemsService.selectProjectItemsList(projectItems);
-        return getDataTable(list);
+        return getDataTable(list.stream().map(item -> JSONObject.parseObject(JSON.toJSONString(item))).collect(Collectors.toList())
+                .stream().map(item -> {
+                        item.put("projectStatus", ProjectStatusEnum.getType(item.getInteger("projectStatus")));
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
     }
 
     /**
