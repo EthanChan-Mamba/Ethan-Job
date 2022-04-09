@@ -31,6 +31,17 @@ public class ProjectItemsServiceImpl extends ServiceImpl<ProjectItemsMapper, Pro
     @Override
     public List<ProjectItems> selectProjectItemsList(ProjectItems projectItems)
     {
+        return projectItemsMapper.selectProjectItemsList(projectItems);
+    }
+
+    /**
+     * 根据登录者查询projectItems列表
+     *
+     * @param projectItems projectItems
+     * @return projectItems
+     */
+    @Override
+    public List<ProjectItems> selectProjectItemsListByLoginName(ProjectItems projectItems) {
         String username = SecurityUtils.getUsername();
         projectItems.setCreateBy(username);
         return projectItemsMapper.selectProjectItemsList(projectItems);

@@ -70,7 +70,7 @@ public class ProjectItemsController extends BaseController
     @ResponseBody
     public TableDataInfo listNoPage(ProjectItems projectItems)
     {
-        List<ProjectItems> list = projectItemsService.selectProjectItemsList(projectItems);
+        List<ProjectItems> list = projectItemsService.selectProjectItemsListByLoginName(projectItems);
         return getDataTable(list);
     }
 

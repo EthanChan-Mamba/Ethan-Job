@@ -3,9 +3,9 @@
       <el-row :gutter="20">
          <el-col :span="24" :xs="24">
             <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-               <el-form-item label="用户名称" prop="userName">
+               <el-form-item label="用户名称" prop="createBy">
                   <el-input
-                     v-model="queryParams.userName"
+                     v-model="queryParams.createBy"
                      placeholder="请输入用户名称"
                      clearable
                      style="width: 240px"
@@ -101,9 +101,12 @@
 <script setup name="projectList">
 import { listProjectItems } from "@/api/ethanBusiness/projectItems";
 import projectItemDialog from "../projectItems/modules/projectItemDialog.vue";
+const { proxy } = getCurrentInstance();
 const projectList = $ref([]);
 const projectItemDialogRef = $ref(null)
 const loading = $ref(true);
+const dateRange = $ref([]);
+const total = $ref(0);
 // 列显隐信息
 const columns = ref([
   { key: 0, label: `项目编号`, visible: true },
@@ -117,19 +120,18 @@ const columns = ref([
   { key: 8, label: `更新时间`, visible: true }
 ]);
 const data = reactive({
-   form: {},
    queryParams: {
       pageNum: 1,
       pageSize: 10,
-      userName: undefined,
-      projectName: undefined,
-      deptId: undefined
+      createBy: undefined,
+      projectName: undefined
    }
 });
-const { queryParams, form, rules } = toRefs(data);
+const { queryParams } = toRefs(data);
 function handleQuery () {
-   listProjectItems().then(response => {
-      projectList = response.rows;
+   listProjectItems(proxy.addDateRange(queryParams.value, dateRange)).then(response => {
+      projectList = response.rows
+      total = response.rows.length
       console.log(response)
       loading = false
    });
@@ -138,7 +140,9 @@ function handleUpdate(record) {
    projectItemDialogRef.openDialog(record)
 }
 function resetQuery () {
-
+   dateRange = []
+   proxy.resetForm("queryRef");
+   handleQuery()
 };
 handleQuery()
 </script>

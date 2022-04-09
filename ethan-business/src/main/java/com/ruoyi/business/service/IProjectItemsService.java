@@ -1,8 +1,9 @@
 package com.ruoyi.business.service;
 
-import java.util.List;
-import com.ruoyi.business.domain.ProjectItems;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ruoyi.business.domain.ProjectItems;
+
+import java.util.List;
 
 /**
  * projectItemsService接口
@@ -20,4 +21,11 @@ public interface IProjectItemsService extends IService<ProjectItems>
      */
     public List<ProjectItems> selectProjectItemsList(ProjectItems projectItems);
 
+    /**
+     * 根据登录者查询projectItems列表
+     *
+     * @param projectItems projectItems
+     * @return projectItems集合
+     */
+    public List<ProjectItems> selectProjectItemsListByLoginName(ProjectItems projectItems);
 }
