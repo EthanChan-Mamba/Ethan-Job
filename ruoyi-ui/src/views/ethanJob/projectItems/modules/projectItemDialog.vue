@@ -39,12 +39,12 @@
 </template>
 
 <script setup name="ProjectItemsDialog">
-import { addProjectItems } from "@/api/ethanBusiness/projectItems";
+import { addProjectItems, updateProjectItems } from "@/api/ethanBusiness/projectItems";
 
 const { proxy } = getCurrentInstance();
 
-const open = ref(false);
-const title = ref("");
+let open = $ref(false);
+let title = $ref("");
 
 const data = reactive({
    form: {
@@ -63,7 +63,7 @@ defineExpose({
 })
 /** 取消按钮 */
 function cancel() {
-  open.value = false;
+  open = false;
 }
 /** 提交按钮 */
 function submitForm() {
@@ -71,31 +71,31 @@ function submitForm() {
       if (valid) {
          form.value.finishTimeStart = form.value.projectTime[0]
          form.value.finishTimeEnd = form.value.projectTime[1]
-         console.log('form.value', form.value)
-         addProjectItems(form.value).then(response => {
-            proxy.$modal.msgSuccess("新增成功");
-            open.value = false;
-            // getList();
-         });
-         // if (form.value.menuId != undefined) {
-         //    updateMenu(form.value).then(response => {
-         //       proxy.$modal.msgSuccess("修改成功");
-         //       open.value = false;
-         //       getList();
-         //    });
-         // } else {
-         //    addProjectItems(form.value).then(response => {
-         //       proxy.$modal.msgSuccess("新增成功");
-         //       open.value = false;
-         //       getList();
-         //    });
-         // }
+         if (form.value.projectId) {
+            updateProjectItems(form.value).then(response => {
+               proxy.$modal.msgSuccess("修改成功");
+               open = false;
+               getList();
+            });
+         } else {
+            addProjectItems(form.value).then(response => {
+               proxy.$modal.msgSuccess("新增成功");
+               open = false;
+            });
+         }
       }
    });
 }
 /** 打开窗口 */
 function openDialog(record) {
-  open.value = true;
+   open = true
+   if (!record.projectId) {
+      title = "新增项目"
+   } else {
+      title = "编辑项目"
+      record.projectTime = [record.finishTimeStart, record.finishTimeEnd]
+      form.value = record
+   }
 }
 
 </script>

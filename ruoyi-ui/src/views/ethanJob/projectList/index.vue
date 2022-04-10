@@ -132,7 +132,6 @@ function handleQuery () {
    listProjectItems(proxy.addDateRange(queryParams.value, dateRange)).then(response => {
       projectList = response.rows
       total = response.rows.length
-      console.log(response)
       loading = false
    });
 };
