@@ -102,11 +102,11 @@
 import { listProjectItems } from "@/api/ethanBusiness/projectItems";
 import projectItemDialog from "../projectItems/modules/projectItemDialog.vue";
 const { proxy } = getCurrentInstance();
-const projectList = $ref([]);
-const projectItemDialogRef = $ref(null)
-const loading = $ref(true);
-const dateRange = $ref([]);
-const total = $ref(0);
+let projectList = $ref([]);
+const projectItemDialogRef = $ref(null);
+let loading = $ref(true);
+let dateRange = $ref([]);
+let total = $ref(0);
 // 列显隐信息
 const columns = ref([
   { key: 0, label: `项目编号`, visible: true },
