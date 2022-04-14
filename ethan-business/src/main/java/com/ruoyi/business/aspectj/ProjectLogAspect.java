@@ -79,7 +79,7 @@ public class ProjectLogAspect {
             // 设置所属项目
             assert args != null;
             news.setProjectNewsName(args.getMissionItemName());
-            news.setProjectId(args.getProjectItemId());
+            news.setProjectId(args.getProjectId());
             projectNewsService.save(news);
         } catch (ClassNotFoundException e) {
             log.error(e.getMessage());

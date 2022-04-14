@@ -19,7 +19,9 @@
                      class="list"
                      infinite-scroll-disabled="disabled"
                   >
-                     <li v-for="(item, index) in projectList" :key="index" class="list-item">
+                     <li v-for="(item, index) in projectList" :key="index" class="listItem"
+                        v-bind:class="{ currentItem: (item.projectId == ProjectItem.projectId)} "
+                        @click="setProjectCard(item)">
                         <el-row :gutter="20">
                            <el-col :span="24" :xs="24">
                               <span>{{ item.projectName }}</span>
@@ -83,12 +85,16 @@ function getPorjectselect() {
       console.log(response)
       if (projectList.value.length != 0) {
          ProjectItem = projectList.value[0]
-         ProjectMissionItemRef.setProjectItem(ProjectItem)
+         setProjectCard(ProjectItem)
       }
    });
 };
 function newProjectItem() {
    projectItemDialogRef.value.openDialog(null)
+};
+function setProjectCard(item) {
+   ProjectItem = item
+   ProjectMissionItemRef.setProjectItem(ProjectItem)
 }
 
 getPorjectselect();
@@ -96,59 +102,71 @@ getPorjectselect();
 
 
 <style scoped lang="scss">
-  .infinite-list-wrapper {
-    height: 300px;
-    text-align: center;
-  }
-  .infinite-list-wrapper .list {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
+   .infinite-list-wrapper {
+      height: 300px;
+      text-align: center;
+   }
+   .infinite-list-wrapper .list {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+   }
 
-  .infinite-list-wrapper .list-item {
-    display: flex;
-    // align-items: center;
-    // justify-content: center;
-    line-height: 50px;
-    padding: 0 20px;
-    height: 50px;
-    background: var(--el-color-primary-light-7);
-    border-left: solid 2px var(--el-color-primary-light-7);
-    color: #030852;
-  }
-  .infinite-list-wrapper .list-item:hover {
-    border-left: solid 2px rgba(64 158 255 / 80%);
-    background: var(--el-color-primary-light-3);
-    cursor: pointer;
-  }
-  .infinite-list-wrapper .list-item + .list-item {
-    margin-top: 10px;
-  }
-  .infinite-list-wrapper::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width : 8px;  /*高宽分别对应横竖滚动条的尺寸*/
-    height: 1px;
-  }
-  .infinite-list-wrapper::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius   : 10px;
-    background-color: skyblue;
-    background-image: -webkit-linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.2) 25%,
-        transparent 25%,
-        transparent 50%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(255, 255, 255, 0.2) 75%,
-        transparent 75%,
-        transparent
-    );
-  }
-  .infinite-list-wrapper::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background   : #ededed;
-    border-radius: 10px;
-  }
+   .infinite-list-wrapper .listItem {
+      display: flex;
+      // align-items: center;
+      // justify-content: center;
+      line-height: 50px;
+      padding: 0 20px;
+      height: 50px;
+      background: var(--el-color-primary-light-7);
+      border-left: solid 2px var(--el-color-primary-light-7);
+      color: #030852;
+   }
+   .infinite-list-wrapper .listItem:hover {
+      border-left: solid 2px rgba(64 158 255 / 80%);
+      background: var(--el-color-primary-light-3);
+      cursor: pointer;
+   }
+   .infinite-list-wrapper .listItem + .listItem {
+      margin-top: 10px;
+   }
+
+   .infinite-list-wrapper .currentItem {
+      display: flex;
+      // align-items: center;
+      // justify-content: center;
+      line-height: 50px;
+      padding: 0 20px;
+      height: 50px;
+      background: var(--el-color-primary-light-3);
+      border-left: solid 2px rgba(64 158 255 / 80%);
+      color: #030852;
+   }
+   .infinite-list-wrapper::-webkit-scrollbar {
+      /*滚动条整体样式*/
+      width : 8px;  /*高宽分别对应横竖滚动条的尺寸*/
+      height: 1px;
+   }
+   .infinite-list-wrapper::-webkit-scrollbar-thumb {
+      /*滚动条里面小方块*/
+      border-radius   : 10px;
+      background-color: skyblue;
+      background-image: -webkit-linear-gradient(
+         45deg,
+         rgba(255, 255, 255, 0.2) 25%,
+         transparent 25%,
+         transparent 50%,
+         rgba(255, 255, 255, 0.2) 50%,
+         rgba(255, 255, 255, 0.2) 75%,
+         transparent 75%,
+         transparent
+      );
+   }
+   .infinite-list-wrapper::-webkit-scrollbar-track {
+      /*滚动条里面轨道*/
+      box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+      background   : #ededed;
+      border-radius: 10px;
+   }
 </style>

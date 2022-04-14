@@ -2,8 +2,8 @@
    <el-card class="box-card">
       <template #header>
          <div class="card-header">
-         <span class="header-title">{{projectItem.projectName}}</span>
-         <!-- <el-button class="button" type="text" @click="newProjectMissionItem">新增任务</el-button> -->
+            <span class="header-title">{{projectItem.projectName}}</span>
+            <el-button type="danger" @click="delProjectItem">删除项目</el-button>
          </div>
       </template>
       <el-descriptions>
@@ -28,11 +28,11 @@ const title = ref("");
 let ProjectMissionItemTagsRef = $ref(null)
 let projectItem = $ref({});
 
-const data = reactive({
-   // missionItem: und
-});
+// const data = reactive({
+//    projectItem: {}
+// });
 
-const { } = toRefs(data);
+// const { projectItem } = toRefs(data);
 defineExpose({
 	setProjectItem
 })
@@ -53,6 +53,13 @@ function setProjectItem(pi) {
       projectItem.projectStatusContent = '完成'
    }
    ProjectMissionItemTagsRef.setProjectItem(pi)
+}
+function delProjectItem() {
+   proxy.$modal.confirm('确认要删除"' + projectItem.projectName + '"项目吗?').then(function () {
+      // return runJob(row.jobId, row.jobGroup);
+   }).then(() => {
+      proxy.$modal.msgSuccess("删除成功");})
+   .catch(() => {});
 }
 
 </script>

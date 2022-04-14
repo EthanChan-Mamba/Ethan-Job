@@ -7,7 +7,7 @@
         </div>
       </template>
       <p class="front-card">任务数据如下：</p>
-      
+
       <el-row :gutter="20">
           <el-col :span="8" :xs="24">
             <el-card class="card-item card-item-pending" @click="getMissionList('pending')">
@@ -29,7 +29,7 @@
           </el-col>
       </el-row>
     </el-card>
-    
+
     <el-card class="box-card-down">
       <template #header>
         <span>任务列表</span>
@@ -195,7 +195,7 @@ getMissionList('pending')
     // box-shadow: #f1c40f;
     box-shadow: 0 0 7px 5px rgba(231 76 60 / 40%);
   }
-  
+
   .card-title {
     font-weight: bold;
     font-size: 22px;

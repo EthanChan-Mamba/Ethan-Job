@@ -89,7 +89,7 @@ function submitForm() {
 /** 打开窗口 */
 function openDialog(record) {
    open = true
-   if (!record.projectId) {
+   if (!record) {
       title = "新增项目"
    } else {
       title = "编辑项目"

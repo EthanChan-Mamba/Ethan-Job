@@ -59,7 +59,7 @@ const emit = defineEmits();
 
 let open = $ref(false);
 const title = ref('');
-let dialogProjectItemId = $ref('');
+let dialogprojectId = $ref('');
 
 const data = reactive({
    form: {
@@ -91,7 +91,7 @@ function submitForm() {
             if (response.code == 200) {
                proxy.$modal.msgSuccess("新增成功");
                open = false;
-               emit('ok', dialogProjectItemId)
+               emit('ok', dialogprojectId)
             }
          });
          // if (form.value.menuId != undefined) {
@@ -111,8 +111,8 @@ function submitForm() {
    });
 }
 /** 打开窗口 */
-function openDialog(projectItemId) {
-   dialogProjectItemId = projectItemId
+function openDialog(projectId) {
+   dialogprojectId = projectId
    open = true;
 }
 

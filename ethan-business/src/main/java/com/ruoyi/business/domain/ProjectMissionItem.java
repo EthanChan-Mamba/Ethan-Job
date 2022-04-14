@@ -31,7 +31,7 @@ public class ProjectMissionItem extends MPBaseEntity
 
     /** 所属项目任务id */
     @Excel(name = "所属项目任务id")
-    private Integer projectItemId;
+    private Integer projectId;
 
     /** 任务描述 */
     @Excel(name = "任务描述")
