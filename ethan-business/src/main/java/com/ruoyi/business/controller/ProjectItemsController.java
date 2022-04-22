@@ -132,10 +132,12 @@ public class ProjectItemsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ethan-business:projectItems:edit')")
     @Log(title = "projectItems", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
+    @PutMapping
     @ResponseBody
-    public AjaxResult editSave(ProjectItems projectItems)
+    public AjaxResult editSave(@RequestBody ProjectItems projectItems)
     {
+        projectItems.setUpdateBy(getLoginUser().getUsername());
+        projectItems.setUpdateTime(new Date());
         return toAjax(projectItemsService.updateById(projectItems));
     }
 

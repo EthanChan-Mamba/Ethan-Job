@@ -1,8 +1,9 @@
 package com.ruoyi.business.mapper;
 
-import java.util.List;
-import com.ruoyi.business.domain.ProjectItems;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ruoyi.business.domain.ProjectItems;
+
+import java.util.List;
 
 /**
  * projectItemsMapper接口
@@ -19,5 +20,13 @@ public interface ProjectItemsMapper extends BaseMapper<ProjectItems>
      * @return projectItems集合
      */
     public List<ProjectItems> selectProjectItemsList(ProjectItems projectItems);
+
+    /**
+     * 查询projectItems列表
+     *
+     * @param projectItems projectItems
+     * @return projectItems集合
+     */
+    public List<ProjectItems> selectProjectItemsListByLoginName(ProjectItems projectItems);
 
 }

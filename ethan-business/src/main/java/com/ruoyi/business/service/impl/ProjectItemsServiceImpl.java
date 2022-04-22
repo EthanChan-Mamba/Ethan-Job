@@ -44,7 +44,7 @@ public class ProjectItemsServiceImpl extends ServiceImpl<ProjectItemsMapper, Pro
     public List<ProjectItems> selectProjectItemsListByLoginName(ProjectItems projectItems) {
         String username = SecurityUtils.getUsername();
         projectItems.setCreateBy(username);
-        return projectItemsMapper.selectProjectItemsList(projectItems);
+        return projectItemsMapper.selectProjectItemsListByLoginName(projectItems);
     }
 
 }

@@ -19,12 +19,15 @@
 </template>
 
 <script setup name="ProjectMissionItemCard">
-import ProjectMissionItemTags from "./projectMissionItemTags.vue"
+import { updateProjectItems } from "@/api/ethanBusiness/projectItems";
+import ProjectMissionItemTags from "./projectMissionItemTags.vue";
 
 const { proxy } = getCurrentInstance();
+const emit = defineEmits();
 
 const open = ref(false);
 const title = ref("");
+let timer = $ref();
 let ProjectMissionItemTagsRef = $ref(null)
 let projectItem = $ref({});
 
@@ -56,9 +59,16 @@ function setProjectItem(pi) {
 }
 function delProjectItem() {
    proxy.$modal.confirm('确认要删除"' + projectItem.projectName + '"项目吗?').then(function () {
-      // return runJob(row.jobId, row.jobGroup);
+      projectItem.projectStatus = 6
+      updateProjectItems(projectItem).then(response => {});
    }).then(() => {
-      proxy.$modal.msgSuccess("删除成功");})
+      clearTimeout(timer)
+      proxy.$modal.msgSuccess("删除成功");
+      timer = setTimeout(() => {
+         // 设置延迟执行
+         emit('getList')
+      }, 800)
+   })
    .catch(() => {});
 }
 

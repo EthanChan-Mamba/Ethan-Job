@@ -40,7 +40,7 @@
             </el-row>
             <el-row :gutter="10" class="mb8">
                <el-col :span="20">
-                  <project-mission-item-card-module ref="ProjectMissionItemRef" />
+                  <project-mission-item-card-module ref="ProjectMissionItemRef" @getList="getProjectselect" />
                </el-col>
             </el-row>
          </el-col>
@@ -74,12 +74,15 @@ const filterNode = (value, data) => {
   return data.label.indexOf(value) !== -1;
 };
 
+defineExpose({
+  getProjectselect
+});
 /** 根据名称筛选部门树 */
 watch(deptName, val => {
   proxy.$refs["deptTreeRef"].filter(val);
 });
 /** 查询任务 */
-function getPorjectselect() {
+function getProjectselect() {
    listProjectItemsNoPage().then(response => {
       projectList.value = response.rows;
       console.log(response)
@@ -97,7 +100,7 @@ function setProjectCard(item) {
    ProjectMissionItemRef.setProjectItem(ProjectItem)
 }
 
-getPorjectselect();
+getProjectselect();
 </script>
 
 
