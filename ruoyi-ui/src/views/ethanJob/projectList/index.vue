@@ -78,7 +78,7 @@
                         <el-button
                            type="text"
                            icon="Delete"
-                           @click="handleDelete(scope.row)"
+                           @click="handleDelete(scope.row.projectId)"
                            v-hasPermi="['system:user:remove']"
                         ></el-button>
                      </el-tooltip>
@@ -99,7 +99,7 @@
 </template>
 
 <script setup name="projectList">
-import { listProjectItems } from "@/api/ethanBusiness/projectItems";
+import { listProjectItems, delProjectItems } from "@/api/ethanBusiness/projectItems";
 import projectItemDialog from "../projectItems/modules/projectItemDialog.vue";
 const { proxy } = getCurrentInstance();
 let projectList = $ref([]);
@@ -137,6 +137,11 @@ function handleQuery () {
 };
 function handleUpdate(record) {
    projectItemDialogRef.openDialog(record)
+}
+function handleDelete(projectId) {
+   delProjectItems(projectId).then(response => {
+      proxy.$modal.msgSuccess("删除成功");
+   });
 }
 function resetQuery () {
    dateRange = []
