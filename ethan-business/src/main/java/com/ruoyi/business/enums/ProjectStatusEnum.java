@@ -30,7 +30,11 @@ public enum ProjectStatusEnum
     /**
      * 失效
      */
-    FAILURE(5 , "失效");
+    FAILURE(5 , "失效"),
+    /**
+     * 删除
+     */
+    DELETE(6 , "已删除");
 
     private final int code;
     private final String info;
