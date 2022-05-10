@@ -63,7 +63,7 @@
 <script setup name="Index">
 import { timeFix } from '@/utils/util'
 import { getUserProfile } from "@/api/system/user"
-import { listProjectMissionItem, listNumsWithMissionList, listMissionListByUserid } from "@/api/ethanBusiness/projectMissionItem"
+import { listNumsWithMissionList, homepageListMissionListByUserid } from "@/api/ethanBusiness/projectMissionItem"
 // const version = ref('3.8.1')
 const { proxy } = getCurrentInstance();
 let noMore = $ref(false);
@@ -84,9 +84,7 @@ let postGroup = $ref({});
 let queryParams = $ref({
   pageNum: 1,
   pageSize: 6,
-  params: {
-    status: []
-  }
+  missionItemStatus: 1
 });
 let unfinishList = $ref([
   {
@@ -136,12 +134,11 @@ function getListNumsWithMissionList () {
 }
 function getMissionList (statu) {
   if (statu === 'pending') {
-    queryParams.params.status.push('进行中')
+    queryParams.missionItemStatus = 1
   } else if (statu === 'timeout') {
-    queryParams.params.status.push('超时')
-    queryParams.params.status.push('延期')
+    queryParams.missionItemStatus = 2
   }
-  listMissionListByUserid(queryParams).then(response => {
+  homepageListMissionListByUserid(queryParams).then(response => {
     console.log('response', response)
     unfinishList = response.rows
   })

@@ -29,4 +29,11 @@ public interface IProjectMissionItemService extends IService<ProjectMissionItem>
      */
     public List<ProjectMissionItem> selectProjectMissionItemListByUserid(ProjectMissionItem projectMissionItem);
 
+    /**
+     * 根据userid和状态值查询任务项目个体列表
+     *
+     * @param projectMissionItem 任务项目个体
+     * @return 任务项目个体集合
+     */
+    public List<ProjectMissionItem> homepageListMissionListByUserid(ProjectMissionItem projectMissionItem);
 }

@@ -78,6 +78,20 @@ public class ProjectMissionItemController extends BaseController
     }
 
     /**
+     * 根据userid查询任务项目个体列表
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('ethan-business:ProjectMissionItem:list')")
+    @GetMapping("/homepageListMissionListByUserid")
+    @ResponseBody
+    public TableDataInfo homepageListMissionListByUserid(ProjectMissionItem projectMissionItem)
+    {
+        startPage();
+        List<ProjectMissionItem> list = projectMissionItemService.homepageListMissionListByUserid(projectMissionItem);
+        return getDataTable(list);
+    }
+
+    /**
      * 查询任务项目个体列表
      * @return
      */

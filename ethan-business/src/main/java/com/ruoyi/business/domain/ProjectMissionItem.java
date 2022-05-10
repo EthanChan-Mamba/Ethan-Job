@@ -2,10 +2,10 @@ package com.ruoyi.business.domain;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.core.domain.MPBaseEntity4;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.MPBaseEntity;
 
 import java.util.Date;
 
@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper=true)
-public class ProjectMissionItem extends MPBaseEntity
+public class ProjectMissionItem extends MPBaseEntity4
 {
     private static final long serialVersionUID = 1L;
 

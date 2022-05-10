@@ -9,6 +9,15 @@ export function listProjectMissionItem(query) {
   })
 }
 
+// 首页查询任务项目个体列表
+export function homepageListMissionListByUserid(query) {
+  return request({
+    url: '/ethan-business/ProjectMissionItem/homepageListMissionListByUserid',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询任务项目个体列表
 export function listMissionListByUserid(query) {
   return request({
